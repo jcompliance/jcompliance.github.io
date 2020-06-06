@@ -1,0 +1,26 @@
+---
+layout: default
+ref: index
+lang: ko
+---
+
+<div class="home">
+
+  <h1 class="page-heading">포스트</h1>
+
+  <ul class="post-list">
+    {% assign posts=site.posts | where:"lang", page.lang %}
+    {% for post in posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p class="rss-subscribe"><a href="{{ "/feed-kr.xml" | prepend: site.baseurl }}">RSS</a>로 구독하기</p>
+
+</div>

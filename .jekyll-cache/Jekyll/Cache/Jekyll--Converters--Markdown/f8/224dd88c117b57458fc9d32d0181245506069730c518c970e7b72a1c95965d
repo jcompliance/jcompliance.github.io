@@ -1,0 +1,3 @@
+I"Ô<p>In <a href="https://blog.jeann.net/cloudflare/logs/2019/03/19/pulling-cloudflare-logs-with-bash.html">this previous article</a> I have talked about how to pull Cloudflare raw logs periodically and save them in your choice of storage server. Thatâ€™s one way of retrieving Cloudflare logs. However more recommended way is to set a Logpush endpoint so you do not have to even run the script, Cloudflare pushes logs periodically to your storage, every 5 minutes.</p>
+
+:ET

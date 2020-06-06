@@ -1,0 +1,15 @@
+I"b<stream src="b48f9d6938e1ed295828be80d2db0cb1" controls=""></stream>
+<script data-cfasync="false" defer="" type="text/javascript" src="https://embed.videodelivery.net/embed/r4xu.fla9.latest.js?video=b48f9d6938e1ed295828be80d2db0cb1"></script>
+
+<p>This video is powered by Cloudflare Stream.</p>
+
+<p>I’ve filmed a webinar for my enterprise customers about how to use Cloudflare features to get the most benefit of it in terms of security. It’s all about walkthrough of Cloudflare security features, such as DDoS protection, WAF, Firewall Rules etc, and explanation about how they are beneficial, how you can set them up. Hope you find it helpful.</p>
+
+<h1 id="prerequisite">Prerequisite</h1>
+
+<ul>
+  <li>Cloudflare’s Enterprise subscription</li>
+  <li>Access to Cloudflare dashboard</li>
+  <li>Access to the origin server protected behind Cloudflare</li>
+</ul>
+:ET

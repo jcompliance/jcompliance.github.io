@@ -1,0 +1,557 @@
+I"'<p>I wanted to leave a note on frequently asked API calls (for my personal convenience). They’re ready to use, you just have to change below fields to your own requirement:</p>
+
+<h3 class="no_toc" id="variables">Variables</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;YOUR_EMAIL&gt;</code> : To specify who’s requesting. Use the email address you use to access the dashboard.</li>
+  <li><code class="highlighter-rouge">&lt;API_KEY&gt;</code> : To authenticate you. Find the key in the dashboard under My Profile - API Tokens - API Keys - Global API Key. Handle this like your password.</li>
+  <li><code class="highlighter-rouge">&lt;ZONE_ID&gt;</code> : To specify your domain. Find it in the dashboard under Overview - API - Zone ID.</li>
+  <li><code class="highlighter-rouge">&lt;TIME_START&gt;</code> : Start timestamp formatted as rfc3339 or UNIX. Use UTC time.</li>
+  <li><code class="highlighter-rouge">&lt;TIME_END&gt;</code> : End timestamp formatted as rfc3339 or UNIX. Use UTC time. When you request logs, you specify “I want logs happened from <code class="highlighter-rouge">&lt;TIME_START&gt;</code> to <code class="highlighter-rouge">&lt;TIME_END&gt;</code>” <a href="https://developers.cloudflare.com/logs/logpull-api/requesting-logs/#parameters">Details</a></li>
+</ul>
+
+<p>Sections with BETA flags mean they’re not part of official offerings yet. Keep in mind that general beta caveats apply - things can be added, changed, paused or withdrawed, also we would appreciate your constructive feedback!</p>
+
+<h1 class="no_toc" id="table-of-contents">Table of Contents</h1>
+
+<ul id="markdown-toc">
+  <li><a href="#raw-logs-ent-only" id="markdown-toc-raw-logs-ent-only">Raw Logs (ENT only)</a>    <ul>
+      <li><a href="#retrieve-logs" id="markdown-toc-retrieve-logs">Retrieve Logs</a>        <ul>
+          <li><a href="#logpush" id="markdown-toc-logpush">Logpush</a>            <ul>
+              <li><a href="#faster-push-beta" id="markdown-toc-faster-push-beta">Faster Push (BETA)</a></li>
+              <li><a href="#firewall-events-beta" id="markdown-toc-firewall-events-beta">Firewall Events (BETA)</a></li>
+              <li><a href="#new-performance-metrics-beta" id="markdown-toc-new-performance-metrics-beta">New Performance Metrics (BETA)</a></li>
+              <li><a href="#add-custom-headers-to-your-logpush-beta" id="markdown-toc-add-custom-headers-to-your-logpush-beta">Add Custom Headers to your Logpush (BETA)</a></li>
+            </ul>
+          </li>
+          <li><a href="#logpull" id="markdown-toc-logpull">Logpull</a>            <ul>
+              <li><a href="#enable-log-retention" id="markdown-toc-enable-log-retention">Enable log retention</a></li>
+              <li><a href="#pull-your-logs-in-specific-timeframe" id="markdown-toc-pull-your-logs-in-specific-timeframe">Pull your logs in specific timeframe</a></li>
+              <li><a href="#pull-your-logs-for-a-specific-rayid" id="markdown-toc-pull-your-logs-for-a-specific-rayid">Pull your logs for a specific RayID</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#analyse-logs" id="markdown-toc-analyse-logs">Analyse Logs</a>        <ul>
+          <li><a href="#error-analysis-in-specific-timeframe" id="markdown-toc-error-analysis-in-specific-timeframe">Error analysis in specific timeframe</a></li>
+          <li><a href="#map-each-requests-clientcountry-information-to-corresponding-cloudflare-colo" id="markdown-toc-map-each-requests-clientcountry-information-to-corresponding-cloudflare-colo">Map each request’s clientCountry information to corresponding Cloudflare colo</a></li>
+          <li><a href="#pathingstatus-information-per-status-codes" id="markdown-toc-pathingstatus-information-per-status-codes">PathingStatus information per Status Codes</a></li>
+          <li><a href="#top-20-clientip-top-20-useragents-in-specific-timeframe" id="markdown-toc-top-20-clientip-top-20-useragents-in-specific-timeframe">Top 20 clientIP, top 20 userAgents in specific timeframe</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#web-application-firewall" id="markdown-toc-web-application-firewall">Web Application Firewall</a>    <ul>
+      <li><a href="#minimize-false-negatives" id="markdown-toc-minimize-false-negatives">Minimize false negatives</a></li>
+      <li><a href="#minimize-false-positives" id="markdown-toc-minimize-false-positives">Minimize false positives</a></li>
+      <li><a href="#waf-override-ent-only" id="markdown-toc-waf-override-ent-only">WAF Override (ENT Only)</a>        <ul>
+          <li><a href="#retrieve-current-waf-override-rules" id="markdown-toc-retrieve-current-waf-override-rules">Retrieve current WAF Override rules</a></li>
+          <li><a href="#create-a-new-waf-override-rule" id="markdown-toc-create-a-new-waf-override-rule">Create a new WAF Override rule</a></li>
+          <li><a href="#delete-undesired-override-rules" id="markdown-toc-delete-undesired-override-rules">Delete undesired override rules</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="raw-logs-ent-only">Raw Logs (ENT only)</h1>
+
+<p>Detailed request logs that were processed at Cloudflare enterprize zone. You may use either Logpush or Logpull to analyse what happened in detailed manner. All API calls under this section is available for enterprise zone only.</p>
+
+<h2 id="retrieve-logs">Retrieve Logs</h2>
+
+<h3 id="logpush">Logpush</h3>
+
+<p>You’ll configure the endpoint you want to get the logs saved, then Cloudflare will <strong>push</strong> your logs to that endpoint every 5 minutes. <a href="https://developers.cloudflare.com/logs/logpush/">Get Started</a></p>
+
+<p>As of 28/May/2020, below data sets are available.</p>
+<ul>
+  <li>http requests</li>
+  <li>spectrum events</li>
+</ul>
+
+<h4 id="faster-push-beta">Faster Push (BETA)</h4>
+
+<p>Up-to-date on: 2020-05-28</p>
+
+<p>Logpush sends you processed logs every 5 minutes. You can make push job even faster which is currently under early access / available via API only. Once enabled, Cloudflare will send log files every 30 seconds instead of 5 minutes. If there was no request made in 30 seconds you won’t get the logfile. For your information, the existing Logpush jobs will be updated to this once Beta is completed.</p>
+
+<p>Below are steps to enable faster push. Firstly, run below query to retrieve your existing logpush job ID.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span>     <span class="s1">'https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logpush/jobs'</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<p>You’ll find the Logpush job id looks like <code class="highlighter-rouge">"id": 14644,</code>
+Save your job id as it will be used at the next query.</p>
+
+<p>Run below query to update current logpush job to faster one (logstream)</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">PUT</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logpush/jobs/&lt;JOB_ID&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="p">\</span>
+     <span class="o">--</span><span class="n">data</span> <span class="s1">'{"logstream":true}'</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<p>Confirm you got <code class="highlighter-rouge">"logstream": true,</code> and <code class="highlighter-rouge">"success": true</code> from the response. Once enabled, you’ll receive your logs pushed far more frequently.</p>
+
+<p>If you didn’t even configure any logpush but you need this, look at <a href="https://developers.cloudflare.com/logs/logpush/">our developers doc</a> and <a href="/cloudflare/analytics/2020/05/15/tutorial-cloudflare-logpush.html">my tutorial</a> to get started. You can use API POST request to create a new Logpush job and already add a necessary option to it.</p>
+
+<h4 id="firewall-events-beta">Firewall Events (BETA)</h4>
+
+<p>Up-to-date on: 2020-05-28</p>
+
+<p>Although Firewall events are not part of log offerings yet (You can still use GraphQL API to pull events), but as of 28/May/2020, available at Logpush only as early access. You can only enable this data via API.</p>
+
+<p>Run below query to see what data is available.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">X</span> <span class="no">GET</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">api</span><span class="p">.</span><span class="nf">cloudflare</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">v4</span><span class="o">/</span><span class="n">zones</span><span class="o">/&lt;</span><span class="no">ZONE_ID</span><span class="o">&gt;</span><span class="sr">/logpush/</span><span class="n">datasets</span><span class="o">/</span><span class="n">firewall_events</span><span class="o">/</span><span class="n">fields</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">.</span></code></pre></figure>
+
+<p>If you’d like to try this dataset at your Logpush, please contact your account team (CSM/SE).</p>
+
+<h4 id="new-performance-metrics-beta">New Performance Metrics (BETA)</h4>
+
+<p>Up-to-date on: 2020-05-28</p>
+
+<p>As part of <code class="highlighter-rouge">http_requests</code> dataset, the data team at Cloudflare is making new performance metrics available. These fields give much more detail about request timing hence will be helpful to troubleshoot latency issues. This feature is early access, available at Logpush only. Also, you need to enable <a href="#faster-push-beta">Logstream(Look at Faster Logpush)</a> to use them.</p>
+
+<p>Please contact your account team for more information including fields and definition.</p>
+
+<p>Below are steps to enable these fields. Firstly, run below query to retrieve your existing logpush job ID.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span>     <span class="s1">'https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logpush/jobs'</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<p>You’ll find the Logpush job id looks like <code class="highlighter-rouge">"id": 14644,</code> Save your job id as it will be used at the next query. Make sure you’re updating <code class="highlighter-rouge">https_requests</code> not something else.
+Also, for the job you want to update, copy what’s currently inside at <code class="highlighter-rouge">logpull_options</code> for e.g.:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">      <span class="s2">"logpull_options"</span><span class="p">:</span> <span class="s2">"fields=RayID,ClientIP&amp;timestamps=rfc3339"</span><span class="p">,</span></code></pre></figure>
+
+<p>Let’s say it’s what you currently have, we will add timing metrics into it. They’re:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">fields</span><span class="o">=</span><span class="no">EdgeTimeToFirstByteMs</span><span class="p">,</span><span class="no">ClientTCPRTTMs</span><span class="p">,</span><span class="no">OriginDNSResponseTimeMs</span><span class="p">,</span><span class="no">OriginTCPHandshakeDurationMs</span><span class="p">,</span><span class="no">OriginTLSHandshakeDurationMs</span><span class="p">,</span><span class="no">OriginRequestHeaderSendDurationMs</span><span class="p">,</span><span class="no">OriginResponseHeaderReceiveDurationMs</span><span class="p">,</span><span class="no">OriginResponseDurationMs</span><span class="p">,</span><span class="no">EdgeResponseBodyBytes</span></code></pre></figure>
+
+<p>Once you add timing metrics, your updated <code class="highlighter-rouge">logpull_options</code> will look like below:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">      <span class="s2">"logpull_options"</span><span class="p">:</span> <span class="s2">"fields=RayID,ClientIP,EdgeTimeToFirstByteMs,ClientTCPRTTMs,OriginDNSResponseTimeMs,OriginTCPHandshakeDurationMs,OriginTLSHandshakeDurationMs,OriginRequestHeaderSendDurationMs,OriginResponseHeaderReceiveDurationMs,OriginResponseDurationMs,EdgeResponseBodyBytes&amp;timestamps=rfc3339"</span><span class="p">,</span></code></pre></figure>
+
+<p>We’ll use this to update your existing Logpush. Run the query below.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">PUT</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logpush/jobs/&lt;JOB_ID&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="p">\</span>
+     <span class="o">--</span><span class="n">data</span> <span class="s1">'{"logstream": true,"logpull_options":"&lt;UPDATED_LOGPULL_OPTIONS&gt;"}'</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<p>Confirm you got <code class="highlighter-rouge">"success": true</code> from the response. Once enabled, you’ll be able to retrieve performance metrics in your current <code class="highlighter-rouge">http_requests</code> Logpush job.</p>
+
+<p>If you didn’t even configure any logpush but you need this, look at <a href="https://developers.cloudflare.com/logs/logpush/">our developers doc</a> and <a href="/cloudflare/analytics/2020/05/15/tutorial-cloudflare-logpush.html">my tutorial</a> to get started. You can use API POST request to create a new Logpush job and already add a necessary fields to it.</p>
+
+<h4 id="add-custom-headers-to-your-logpush-beta">Add Custom Headers to your Logpush (BETA)</h4>
+
+<p>Up-to-date on: 2020-05-28</p>
+
+<p><a href="https://developers.cloudflare.com/logs/log-fields/#http-requests">On top of these all 50+ fields</a> Cloudflare Logs/<code class="highlighter-rouge">http_requests</code> dataset provides, if you wish to add another request headers, response headers, or even cookies to your Logpush, this feature can help you. This is currently under early access.</p>
+
+<p>You need to use Logpush and <a href="#faster-push-beta">also enable Logstream flag</a> to use this.</p>
+
+<p>If you’d like to try this, firstly, make sure you have a Logpush job and <a href="#faster-push-beta">enable Logstream flag</a> to your Logpush job. Then contact your account team (CSM/SE), and tell them what fields you want to add and why.</p>
+
+<h3 id="logpull">Logpull</h3>
+
+<p>Unlike Logpush, with Logpull you can pull detailed request logs to your choice of servers or laptops by using API queries. You should always <a href="#enable-log-retention">enable log retention</a> first to go with this option. Use the below query to see if log retention is already on.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="no">GET</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logs/control/retention/flag"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">.</span></code></pre></figure>
+
+<p>Confirm you can see <code class="highlighter-rouge">"flag": true</code>.</p>
+
+<p>As of 28 May, retention is for last 72 hours (up to 7 days). Do use your storage to regularly pull and save raw logs if you need them for longer period. <a href="https://developers.cloudflare.com/logs/logpull-api/understanding-the-basics/#data-retention-period">Data Retention Period</a> <a href="/cloudflare/analytics/2019/03/20/pulling-cloudflare-logs-with-bash.html">Script to pull Cloudflare logs periodically</a></p>
+
+<h4 id="enable-log-retention">Enable log retention</h4>
+
+<p>Source: <a href="https://developers.cloudflare.com/logs/logpull-api/enabling-log-retention/">https://developers.cloudflare.com/logs/logpull-api/enabling-log-retention/</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">POST</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logs/control/retention/flag"</span> <span class="o">-</span><span class="n">d</span><span class="s1">'{"flag":true}'</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">.</span></code></pre></figure>
+
+<h4 id="pull-your-logs-in-specific-timeframe">Pull your logs in specific timeframe</h4>
+
+<p>You have to <a href="#enable-log-retention">enable log retention</a> to be able to use this.</p>
+
+<p>This query will pull every available detailed logs for the given timeframe in your current working directory.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="p">\</span>
+    <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+    <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+    <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logs/received?start=&lt;TIME_START&gt;&amp;end=&lt;TIME_END&gt;&amp;fields=$(curl -s -H "</span><span class="no">X</span><span class="o">-</span><span class="no">Auth</span><span class="o">-</span><span class="no">Email</span><span class="p">:</span> <span class="o">&lt;</span><span class="no">YOUR_EMAIL</span><span class="o">&gt;</span><span class="s2">" -H "</span><span class="no">X</span><span class="o">-</span><span class="no">Auth</span><span class="o">-</span><span class="no">Key</span><span class="p">:</span> <span class="o">&lt;</span><span class="no">API_KEY</span><span class="o">&gt;</span><span class="s2">" "</span><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">api</span><span class="p">.</span><span class="nf">cloudflare</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">v4</span><span class="o">/</span><span class="n">zones</span><span class="o">/&lt;</span><span class="no">ZONE_ID</span><span class="o">&gt;</span><span class="sr">/logs/</span><span class="n">received</span><span class="o">/</span><span class="n">fields</span><span class="s2">" | jq '. | to_entries[] | .key' -r | paste -sd "</span><span class="p">,</span><span class="s2">" -)&amp;timestamps=RFC3339"</span> <span class="o">&gt;</span> <span class="n">logpull</span><span class="p">.</span><span class="nf">json</span></code></pre></figure>
+
+<p>With this query, the detailed logs for http requests happened from <code class="highlighter-rouge">&lt;TIME_START&gt;</code> to <code class="highlighter-rouge">&lt;TIME_END&gt;</code> will be returned in <code class="highlighter-rouge">logpull.json</code>.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logs/received/fields</span></code></pre></figure>
+
+<p>With this query, you can find what the details are, what fields will be downloaded. Should you need explanation on each field, <a href="https://developers.cloudflare.com/logs/log-fields/">please refer to this document.</a> Should you need regular pull of your logs than one-off download, <a href="/cloudflare/analytics/2019/03/20/pulling-cloudflare-logs-with-bash.html">you may want to refer to this bash script.</a></p>
+
+<h4 id="pull-your-logs-for-a-specific-rayid">Pull your logs for a specific RayID</h4>
+
+<p>You have to <a href="#enable-log-retention">enable log retention</a> to be able to use this.</p>
+
+<p>This will pull every available detail for the given request, once you put corresponding RayId.</p>
+
+<p>Here, you also need to replace <code class="highlighter-rouge">&lt;RAY_ID&gt;</code> to the actual RayId (like <code class="highlighter-rouge">59a4189c0813b76f</code>) you would like to investigate.</p>
+
+<p>Source: <a href="https://developers.cloudflare.com/logs/logpull-api/requesting-logs/#parameters">https://developers.cloudflare.com/logs/logpull-api/requesting-logs/#parameters</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">GET</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/logs/rayids/&lt;RAY_ID&gt;?&amp;fields=$(curl -s -H "</span><span class="no">X</span><span class="o">-</span><span class="no">Auth</span><span class="o">-</span><span class="no">Email</span><span class="p">:</span> <span class="o">&lt;</span><span class="no">YOUR_EMAIL</span><span class="o">&gt;</span><span class="s2">" -H "</span><span class="no">X</span><span class="o">-</span><span class="no">Auth</span><span class="o">-</span><span class="no">Key</span><span class="p">:</span> <span class="o">&lt;</span><span class="no">API_KEY</span><span class="o">&gt;</span><span class="s2">" "</span><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">api</span><span class="p">.</span><span class="nf">cloudflare</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">v4</span><span class="o">/</span><span class="n">zones</span><span class="o">/&lt;</span><span class="no">ZONE_ID</span><span class="o">&gt;</span><span class="sr">/logs/</span><span class="n">received</span><span class="o">/</span><span class="n">fields</span><span class="s2">" | jq '. | to_entries[] | .key' -r | paste -sd "</span><span class="p">,</span><span class="s2">" -)&amp;timestamps=RFC3339"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+     <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<h2 id="analyse-logs">Analyse Logs</h2>
+
+<p>You may have been confused what to do if you got your logs and looking at them, as they don’t look friendly readable for human but big flow of data. If you’re Cloudflare partner you may need to just go ahead and set up a SIEM to support your enterprise customer. If you’re a direct enterprise customer and you think setting up a SIEM for this costs more than the goods, then you may want to just run some simple jq queries to analyse your log files - which is what will be addressed in this section.</p>
+
+<p>Every queries in this section assumes you have used Logpush and Logpull already to get your logs saved in your current working directory. If you don’t have logs yet, follow <a href="https://developers.cloudflare.com/logs/logpush/">official Logpush tutorial</a> or <a href="/cloudflare/analytics/2020/05/15/tutorial-cloudflare-logpush.html">my Logpush tutorial</a> and download pushed logs in your working directory.</p>
+
+<p>If you’d rather use Logpull, <a href="#pull-your-logs-in-specific-timeframe">use this query</a> to get your http request logs downloaded.</p>
+
+<h3 id="error-analysis-in-specific-timeframe">Error analysis in specific timeframe</h3>
+
+<p>This jq query helps you to find tendency of 4xx, 5xx errors - if the status codes were returned by Cloudflare edge or the origin server.</p>
+
+<p>Firstly, make sure your current working directory has the logs for the timeframe that needs to be analysed.</p>
+
+<p>If your log format follows <code class="highlighter-rouge">.log.gz</code> run the below query - likely applicable for Logpush.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cat</span> <span class="o">*</span><span class="p">.</span><span class="nf">log</span><span class="p">.</span><span class="nf">gz</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s2">"(.EdgeResponseStatus|tostring) + </span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="s2"> + (.OriginResponseStatus|tostring)"</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">-</span><span class="n">c</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">nr</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n15</span></code></pre></figure>
+
+<p>If your log format follows <code class="highlighter-rouge">.json</code> run the below query - likely applicable for Logpull.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cat</span> <span class="o">*</span><span class="p">.</span><span class="nf">json</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s2">"(.EdgeResponseStatus|tostring) + </span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="s2"> + (.OriginResponseStatus|tostring)"</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">-</span><span class="n">c</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">nr</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n15</span></code></pre></figure>
+
+<p>Once you run the query, you’ll find the output like below.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  390 403 0    
+  150 200 200
+   22 301 301
+    8 404 404
+    2 403 403
+</code></pre></div></div>
+<p>The first column represents number of requests, and the next one represents <code class="highlighter-rouge">EdgeResponseStatus</code> while the third one represents <code class="highlighter-rouge">OriginResponseStatus</code>. You can see there were 390 requests that were dropped by Cloudflare with 403 Forbidden without touching the origin server. There were only 2 requests that were dropped by the origin server with 403 Forbidden and Cloudflare edge just forwarded 403 to the client. Like this, you can use this query to analyze where exactly the error status came from, if Cloudflare edge or the origin.</p>
+
+<h3 id="map-each-requests-clientcountry-information-to-corresponding-cloudflare-colo">Map each request’s clientCountry information to corresponding Cloudflare colo</h3>
+
+<p>Cloudflare uses Anycast to route the visitors’ request to the neareat available colo, following BGP. This query helps you to analyze if requests from certain country(e.g. Singapore) was serviced in which Cloudflare colo(e.g. Singapore data center, SIN) in certain timeframe.</p>
+
+<p>Firstly, make sure your current working directory has the logs for the timeframe that needs to be analysed.</p>
+
+<p>If your log format follows <code class="highlighter-rouge">.log.gz</code> run the below query - likely applicable for Logpush. If your logs are formatted in <code class="highlighter-rouge">.json</code> or <code class="highlighter-rouge">.log</code>, please modify the query accordingly.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cat</span> <span class="o">*</span><span class="p">.</span><span class="nf">log</span><span class="p">.</span><span class="nf">gz</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s2">".ClientCountry + </span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="s2"> + .EdgeColoCode"</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">-</span><span class="n">c</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">nr</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n30</span></code></pre></figure>
+
+<p>Once you run the query, you’ll find the output like below.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  562 sg SIN
+  516 us SEA
+  501 xx SEA
+  162 xx IAD
+  168 us IAD
+   83 xx SIN
+   81 xx AMS
+   78 us EWR
+   61 xx EWR
+   60 nl AMS
+    5 jp NRT
+</code></pre></div></div>
+
+<p>The first column represents number of requests, and the next one represents <code class="highlighter-rouge">ClientCountry</code> while the third one represents <code class="highlighter-rouge">EdgeColoCode</code>. You can see there were 562 requests were from visitors in Singapore(sg) and were serviced at Cloudflare Singapore colo(SIN), 516 requests were from visitors in the United States(us) and were serviced at Cloudflare Seattle colo(SEA) … and 5 requests were from visitors in Japan(jp) and were serviced in Cloudflare Tokyo colo(NRT). Like this, you can use this jq to analyze visitors (including attackers) from which country were routed to which Cloudflare colo.</p>
+
+<p>Note: If you’re to submit a support ticket based on this query, you need to share the raw log that was used for analysis. If you just refer to something summarized without details, support engineer may get confused.</p>
+
+<h3 id="pathingstatus-information-per-status-codes">PathingStatus information per Status Codes</h3>
+
+<p>Firstly, make sure your current working directory has the logs for the timeframe that needs to be analysed.</p>
+
+<p>If your log format follows <code class="highlighter-rouge">.log.gz</code> run the below query - likely applicable for Logpush. If your logs are formatted in <code class="highlighter-rouge">.json</code> or <code class="highlighter-rouge">.log</code>, please modify the query accordingly.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cat</span> <span class="o">*</span><span class="p">.</span><span class="nf">log</span><span class="p">.</span><span class="nf">gz</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s2">"(.EdgeResponseStatus|tostring) + </span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="s2"> + .EdgePathingOp + </span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="s2"> + .EdgePathingSrc + </span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="s2"> + .EdgePathingStatus"</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">-</span><span class="n">c</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">nr</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n30</span></code></pre></figure>
+
+<p>Once you run the query, you’ll find the output like below.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 101 403 ban filterBasedFirewall nr
+  74 403 chl user captchaNew
+  49 200 wl macro se
+  20 304 wl macro nr
+  19 301 wl macro mon
+  18 503 chl filterBasedFirewall jschlNew
+  10 304 wl user nr
+  10 200 wl macro nr
+   8 200 wl macro unknown
+   6 404 wl macro nr
+</code></pre></div></div>
+
+<p>The first column represents number of requests, and the next one represents <code class="highlighter-rouge">EdgeResponseStatus</code> followed by <code class="highlighter-rouge">EdgePathingOp</code>, <code class="highlighter-rouge">EdgePathingSrc</code>, <code class="highlighter-rouge">EdgePathingStatus</code>. <a href="https://developers.cloudflare.com/logs/reference/pathing-status/#body-inner">Refer to this documentation to learn further what each value indicates.</a></p>
+
+<h3 id="top-20-clientip-top-20-useragents-in-specific-timeframe">Top 20 clientIP, top 20 userAgents in specific timeframe</h3>
+
+<p>Firstly, make sure your current working directory has the logs for the timeframe that needs to be analysed.</p>
+
+<p>If your log format follows <code class="highlighter-rouge">.log.gz</code> run the below query - likely applicable for Logpush. If your logs are formatted in <code class="highlighter-rouge">.json</code> or <code class="highlighter-rouge">.log</code>, please modify the query accordingly.</p>
+
+<p><strong>Top 20 clientIP</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cat</span> <span class="o">*</span><span class="p">.</span><span class="nf">log</span><span class="p">.</span><span class="nf">gz</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s2">".ClientIP"</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">-</span><span class="n">c</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">nr</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n20</span></code></pre></figure>
+
+<p>Example output:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  129 216.244.66.197
+  110 106.75.118.223
+  103 106.75.85.117
+  ...
+</code></pre></div></div>
+
+<p><strong>Top 20 userAgent</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cat</span> <span class="o">*</span><span class="p">.</span><span class="nf">log</span><span class="p">.</span><span class="nf">gz</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s2">".ClientRequestUserAgent"</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">-</span><span class="n">c</span> <span class="o">|</span> <span class="n">sort</span> <span class="o">-</span><span class="n">nr</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="n">n20</span></code></pre></figure>
+
+<p>Example output:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  254 Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36
+  148 Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
+  130 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36
+  ...
+</code></pre></div></div>
+
+<p>As shown, this query will return Top 20 clientIPs and userAgents order by number of requests they sent DESC.</p>
+
+<h1 id="web-application-firewall">Web Application Firewall</h1>
+
+<p>Cloudflare WAF is a good way for you to stay up-to-date against newly discovered web vulnerabilities as well as already-well-known ones. Even if something is newly found this week, or possibly next week, <a href="https://developers.cloudflare.com/waf/change-log/">Cloudflare WAF team will patch it for your application.</a> You can’t benefit from WAF patch if you didn’t turn the WAF on so do make sure your WAF is on.</p>
+
+<ul>
+  <li>As for Cloudflare Managed Ruleset, turn at least two rulesets always on: <strong>Cloudflare Specials</strong> Ruleset and <strong>Cloudflare Miscellaneous</strong> Ruleset. For the others, review if the rulesets descriptions are anything to do with technology stack that’s used for your application. If any of them are used, turn them on. <a href="https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-#4vxxAwzbHx0eQ8XfETjxiN">Learn more</a></li>
+  <li>As for OWASP ModSecurity Ruleset, it works a bit differently. <a href="https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-#sJbboLurEVhipzWYJQnyz">Learn more here.</a></li>
+</ul>
+
+<p>I’m documenting some frequently asked/answered API queries about WAF API, for my own convenience. If you would like to learn about WAF itself, <a href="https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-">here’s your go-to-page.</a></p>
+
+<h2 class="no_toc" id="waf-fine-tuning">WAF Fine Tuning</h2>
+
+<p>You just turned Cloudflare WAF on? You guys’ end goals will be common - to have proper protection against vulnerabilities - but about how to get started, you may have different opinions.</p>
+
+<ul>
+  <li>You want to follow our recommendation, and also want to maximize detection rate? <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#minimize-false-negatives">Start here.</a></li>
+  <li>You think WAF must not affect any of requests at the moment, you want to review every rule before turning them on? <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#minimize-false-positives">Start here.</a></li>
+</ul>
+
+<h2 id="minimize-false-negatives">Minimize false negatives</h2>
+
+<p>As of 2020-06-06, you have 413 rules in Cloudflare Managed Ruleset and 2491+ rules in OWASP ModSecurity Ruleset, and they are in ‘default mode’ when you just turned WAF on. Default mode is what Cloudflare recommends with minimum false positives and minimum false negatives, based on our observation at 27M(as of 2020-06-06) applications on the network.</p>
+
+<p>While default mode is our recommendation, the internet is immense, and you will have your application &amp; request flow. So based on your preference and sensitivity you may want to fine-tune WAF rules and it is totally encouraged.</p>
+
+<p>If your thought is close to <strong>‘I’d like to start from Cloudflare’s recommended mode, but also like to have maximum detection rate’</strong>, this section is yours.</p>
+
+<p>Fine-tuning의 시작점을, <strong>‘추천설정으로 시작하되, 추천설정에서 잡히지 않는 공격도 다 캐치하고 싶다’</strong> 로 잡으시는 경우 - 보통 보안에 대한 awareness가 높으신 경우 여기서 시작합니다 - 이 섹션이 도움이 될 것입니다.</p>
+
+<h3 class="no_toc" id="owasp-waf-룰을-모두-켜기">OWASP WAF 룰을 모두 켜기</h3>
+
+<p>OWASP WAF 룰셋의 특징을 <a href="https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-#sJbboLurEVhipzWYJQnyz">이 기술 문서에서 읽어 보시기 바랍니다</a>. 이 섹션에서는 OWASP가 catch-all을 잘 하게 하기 위해, 고객서비스와 유관한 모든 구현된 룰들을 켤 것입니다.</p>
+
+<p>먼저, 아래 API를 써서 <code class="highlighter-rouge">OWASP ModSecurity Core Rule Set</code>의 패키지 ID를 얻어오십시오.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rule-packages-properties">https://api.cloudflare.com/#waf-rule-packages-properties</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s1">'.result[] | {package: .name, id: .id}'</span></code></pre></figure>
+
+<p>아래 쿼리에서 방금 얻어온 <code class="highlighter-rouge">&lt;PACKAGE_ID&gt;</code> 부분을 붙여넣어 아래 API 콜을 돌리십시오.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;m"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages/&lt;PACKAGE_ID&gt;/groups"</span> <span class="o">|</span> <span class="n">jq</span> <span class="s1">'.result[] | {id: .id, name: .name, mode: .mode, count: .rules_count}'</span></code></pre></figure>
+
+<p>이 쿼리의 결과 중 <code class="highlighter-rouge">"mode": "off"</code> 를 보시면 기본적으로 꺼져 있는 OWASP 룰셋을 확인할 수 있습니다. 꺼져 있는 룰셋이 귀사의 서비스에 사용된 기술 스택과 관계가 없다면 그대로 두십시오. 일반적인 룰셋에 해당되거나 귀사의 서비스에 사용된 기술 스택과 관계가 있다면 아래 방법 중 한 가지를 이용하여 켜도록 하십시오.</p>
+
+<ul>
+  <li>UI: Cloudflare 대시보드 - Firewall - Managed Rules - Package: OWASP ModSecurity Core Rule Set에서 모드 변경</li>
+  <li>API: <a href="https://api.cloudflare.com/#waf-rule-groups-edit-rule-group">이 PATCH 쿼리</a>를 이용하셔서 mode를 on으로 업데이트 하시면 됩니다.</li>
+</ul>
+
+<p>필요한 모든 룰이 잘 켜졌는지 확인하기 위해 아래 쿼리를 이용할 수 있습니다.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rules-list-rules">https://api.cloudflare.com/#waf-rules-list-rules</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages/&lt;PACKAGE_ID&gt;/rules?per_page=1000&amp;page=1"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">cr</span> <span class="s1">'.result[] | {id: .id, group: .group.name, mode: .mode} | select(.mode=="off")'</span></code></pre></figure>
+
+<p>mode가 off인 룰들을 표시해 주는 쿼리입니다. 한 페이지당 1000개까지 표시할 수 있는데 OWASP 룰은 수가 많기 때문에, 꺼져있는 전체 룰을 표시하려면 <code class="highlighter-rouge">&amp;page=1</code> 부분을 변경하셔서 2020-06-06 기준 3페이지까지는 보셔야 합니다. 귀찮으시면, Bash Script를 써서 돌리면 한 번 콜로 효율화 할 수가 있겠죠.</p>
+
+<h3 class="no_toc" id="owasp-룰의-민감도와-액션을-조정">OWASP 룰의 민감도와 액션을 조정</h3>
+
+<p><a href="https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-#sJbboLurEVhipzWYJQnyz">공식 기술문서</a>에서는 OWASP 룰의 민감도를 Low로 시작하기를 권장하고 있습니다.</p>
+
+<blockquote>
+  <p>Cloudflare recommends initially setting the WAF Sensitivity to Low and reviewing for false positives before further increasing the Sensitivity.</p>
+</blockquote>
+
+<p>오탐을 줄이기 위해서입니다. 그러나, 궁극적으로는 <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#waf-룰-세부-조정-ent-only">오탐이 발생하는 특정 endpoint를 튜닝 과정에서 예외 처리하면서</a> 민감도를 Medium, 최종적으로는 <code class="highlighter-rouge">High</code>로 올리는 것이 좋습니다. 민감도 High에서만 발견되는 특정 익스플로잇들이 있기 때문입니다.</p>
+
+<p>액션도 마찬가지입니다. <code class="highlighter-rouge">Challenge</code> 혹은 <code class="highlighter-rouge">Simulate</code> 모드로 튜닝을 시작하시되, <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#waf-룰-세부-조정-ent-only">오탐이 발생하는 특정 endpoint를 튜닝 과정에서 예외 처리하면서</a> 최종 Action은 <code class="highlighter-rouge">Block</code>이 되는 것이 좋습니다. 그래야 OWASP 취약점을 노리는 악성 공격자의 리퀘스트를 실제 차단하실 수 있습니다.</p>
+
+<p>귀사의 어플리케이션에 예상치 못한 봇들이 돌고 있거나, 비즈니스적 이유로 WAF가 좋아하지 않을 만한 리퀘스트가 돌고 있을 수 있습니다. <code class="highlighter-rouge">Sensitivity:High</code>와 <code class="highlighter-rouge">Action:Block</code>은 최상의 보안을 제공합니다만 오탐 방지와 fine tuning 과정 없이 Day 1부터 적용했다가는 unpleasant surprises를 겪으실 수 있다는 점 유의하세요.</p>
+
+<p>튜닝 과정에서 <code class="highlighter-rouge">ruleId: 981176</code>으로 표시되는 OWASP 룰과 트리거되는 Path, UA등을 지켜보면서 예외 처리를 진행하세요.</p>
+
+<p>튜닝이 끝나면 예외처리된 특정 Path 외에 전역 룰은 <code class="highlighter-rouge">Sensitivity: High</code> / <code class="highlighter-rouge">Action: Block</code> 으로 변경하는 것이 목표입니다.</p>
+
+<h3 class="no_toc" id="cloudflare-waf-룰의-액션을-최소-simulate-모드로-올리기">Cloudflare WAF 룰의 액션을 최소 Simulate 모드로 올리기</h3>
+
+<p>2700만개(2020-06-06 기준) Cloudflare 고객서비스 중, 몇 곳에서 오탐 가능성이 제기되어 Default 동작이 <code class="highlighter-rouge">Disabled</code>로 되어 있는 룰들이 있습니다. <code class="highlighter-rouge">ruleId 100001: Anomaly:Header:User-Agent - Missing</code> 이 좋은 예시인데요, user-Agent 필드가 없는 리퀘스트는 보통 정상으로 판단하지 않습니다. 그러나 허술하게 짜여진 커스텀 봇을 다 잡아내기 때문에 이런 봇을 의도적으로 돌리는 몇몇 사이트에서는 오탐으로 판단하실 수도 있습니다. Cloudflare는 2700만개(2020-06-06 기준) 고객서비스를 기준으로 잡으므로 노이즈를 줄이기 위해 이러한 룰들은 로깅 없이 꺼져 있습니다. 고객사 입장에서는 이렇게 꺼져 있는 룰들을 로깅 모드 <code class="highlighter-rouge">Simulate</code>로 동작으로 바꾸시면, 방어 대상 사이트에 들어오는 리퀘스트의 현재 상태를 알아본 뒤, 이후에 액션 레벨을 높이실지 혹은 낮추실지를 결정하실 수 있습니다.</p>
+
+<p>따라서 여기서는 <code class="highlighter-rouge">Disable</code>된 룰들을 모두 찾아내고 <code class="highlighter-rouge">Simulate</code>로 바꾸는 법을 알아볼 것입니다.</p>
+
+<p>먼저, 아래 API를 써서 <code class="highlighter-rouge">Cloudflare Managed Ruleset</code>의 패키지 ID를 얻어오십시오.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rule-packages-properties">https://api.cloudflare.com/#waf-rule-packages-properties</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s1">'.result[] | {package: .name, id: .id}'</span></code></pre></figure>
+
+<p>아래 쿼리에서 방금 얻어온 <code class="highlighter-rouge">&lt;PACKAGE_ID&gt;</code> 부분을 붙여넣어 아래 API 콜을 돌리십시오.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rules-list-rules">https://api.cloudflare.com/#waf-rules-list-rules</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages/&lt;PACKAGE_ID&gt;/rules?per_page=999&amp;page=1"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">cr</span> <span class="s1">'.result[] | {id: .id, current_action: .mode, default_action: .default_mode} | select(.default_action=="disable" and .current_action=="default", .current_action=="disable")'</span></code></pre></figure>
+
+<p>이 쿼리는 현재 액션이 <code class="highlighter-rouge">disable</code> 로 설정된 모든 룰과 현재 액션을 표시해 줍니다.</p>
+
+<p>다음은 아래 PATCH 쿼리를 이용하는 Bash Script를 짜셔서 mode를 모두 <code class="highlighter-rouge">simulate</code>로 바꿔주면 됩니다.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rules-edit-rule">https://api.cloudflare.com/#waf-rules-edit-rule</a></p>
+
+<p>끝나셨으면 튜닝 준비가 완료되었습니다. 이제부터는 대시보드에서 로깅되는 WAF 룰을 확인해 가시면서 아래 기준으로 튜닝하시면 됩니다.</p>
+
+<ul>
+  <li>판단에 노이즈가 되는 룰: 공격으로 판단되지 않는데, 지속적으로 대시보드에 출현함 - <code class="highlighter-rouge">Disable</code>으로 변경 결정</li>
+  <li>더욱 가혹한(?) 처벌이 필요한 룰: 룰을 트리거하는 리퀘스트들이 매우 수상한데, 현재 액션이 <code class="highlighter-rouge">Simulate</code>나 <code class="highlighter-rouge">Challenge</code>로 되어 있음 - <code class="highlighter-rouge">Block</code>으로 변경 결정</li>
+</ul>
+
+<h2 id="minimize-false-positives">Minimize false positives</h2>
+
+<p>Cloudflare WAF를 처음 활성화하시면, 2020-06-06 기준, 413개의 Cloudflare Managed Ruleset과, 2491+개의 OWASP ModSecurity Ruleset이 Default 모드로 동작합니다. Default 모드란 2,700만개의 Cloudflare 고객 서비스를 가장 최저의 오탐율(False Positive)과 미탐율(False Negative)로 보호해 드리기 위한 추천 모드입니다.</p>
+
+<p>따라서 이 모드를 그대로 활용하시기를 추천하는 한편, 어플리케이션마다의 특성에 맞게, 그리고 고객사의 민감도에 맞게 fine-tuning 하실 수 있도록 Enterprise 고객에 한정하여 지원해 드리고 있습니다.</p>
+
+<p>Fine-tuning의 시작점을, <strong>‘실트래픽에 아무런 영향이 없도록, 무조건 시뮬레이션부터 시작하고 싶다’</strong> 로 잡으시는 경우 - 보통 안정성을 가장 중시하시는 서비스는 여기서 시작합니다 - 이 섹션이 도움이 될 것입니다. 이 방식으로 가시는 경우 차단 없이 ‘탐지 모드’ 로 시작합니다. 다만 튜닝에 시간을 오래 끌지 않는 편이 좋습니다. 알려진 익스플로잇도 막지 않는 수준에서 시작하기 때문입니다.</p>
+
+<h3 class="no_toc" id="owasp-waf-룰을-모두-켜기-1">OWASP WAF 룰을 모두 켜기</h3>
+
+<p>먼저, OWASP ModSecurity Core Ruleset에서, 방어 대상 고객서비스와 유관한 모든 구현된 룰들을 켤 것입니다. <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#owasp-waf-%EB%A3%B0%EC%9D%84-%EB%AA%A8%EB%91%90-%EC%BC%9C%EA%B8%B0">이 부분을 참고하세요.</a></p>
+
+<h3 class="no_toc" id="owasp-룰의-민감도와-액션을-조정-1">OWASP 룰의 민감도와 액션을 조정</h3>
+
+<p><code class="highlighter-rouge">Sensitivity: Low</code> / <code class="highlighter-rouge">Action: Simulate</code> 로 설정해 주세요.</p>
+
+<p>궁극적으로는 <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#waf-룰-세부-조정-ent-only">오탐이 발생하는 특정 endpoint를 튜닝 과정에서 예외 처리하면서</a> 민감도를 Medium, 최종적으로는 <code class="highlighter-rouge">High</code>로 올리는 것이 좋습니다. 민감도 High에서만 발견되는 특정 익스플로잇들이 있기 때문입니다.</p>
+
+<p>액션도 마찬가지입니다. Simulate 모드로 튜닝을 시작하시되, <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#waf-룰-세부-조정-ent-only">오탐이 발생하는 특정 endpoint를 튜닝 과정에서 예외 처리하면서</a> 최종 Action은 <code class="highlighter-rouge">Block</code>이 되는 것이 좋습니다. 그래야 OWASP 취약점을 노리는 악성 공격자의 리퀘스트를 실제 차단하실 수 있습니다.</p>
+
+<p>튜닝 과정에서 <code class="highlighter-rouge">ruleId: 981176</code>으로 표시되는 OWASP 룰과 트리거되는 Path, UA등을 지켜보면서 예외 처리를 진행하세요.</p>
+
+<p>튜닝이 끝나면 예외처리된 특정 Path 외에 전역 룰은 <code class="highlighter-rouge">Sensitivity: High</code> / <code class="highlighter-rouge">Action: Block</code> 으로 변경하는 것이 목표입니다.</p>
+
+<h3 class="no_toc" id="cloudflare-waf-룰의-모든-액션을-simulate로-변경">Cloudflare WAF 룰의 모든 액션을 Simulate로 변경</h3>
+
+<p>Cloudflare WAF는 2700만개(2020-06-06 기준) Cloudflare 고객서비스 대상으로 가장 낮은 미탐율/오탐율을 보이는 추천 액션 설정(Default Mode) 이 있습니다. 각 액션은 아래와 같습니다.</p>
+
+<ul>
+  <li>Disable : 허용</li>
+  <li>Simulate : 허용하지만, 이벤트를 로그</li>
+  <li>Challenge : CAPTCHA를 통과하면 허용</li>
+  <li>Block : 차단</li>
+</ul>
+
+<p>WAF를 소위 <strong>탐지 모드</strong>로 동작시키기 위해 <code class="highlighter-rouge">Challenge</code>, <code class="highlighter-rouge">Block</code>, (Optional: <code class="highlighter-rouge">Disable</code> 포함)으로 동작하는 룰을 모두 <code class="highlighter-rouge">Simulate</code>로 바꿀 것입니다.</p>
+
+<p>먼저, 아래 API를 써서 <code class="highlighter-rouge">Cloudflare Managed Ruleset</code>의 패키지 ID를 얻어오십시오.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rule-packages-properties">https://api.cloudflare.com/#waf-rule-packages-properties</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">r</span> <span class="s1">'.result[] | {package: .name, id: .id}'</span></code></pre></figure>
+
+<p>아래 쿼리에서 방금 얻어온 <code class="highlighter-rouge">&lt;PACKAGE_ID&gt;</code> 부분을 붙여넣어 아래 API 콜을 돌리십시오.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rules-list-rules">https://api.cloudflare.com/#waf-rules-list-rules</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/packages/&lt;PACKAGE_ID&gt;/rules?per_page=999&amp;page=1"</span> <span class="o">|</span> <span class="n">jq</span> <span class="o">-</span><span class="n">cr</span> <span class="s1">'.result[] | {id: .id, current_action: .mode, default_action: .default_mode} | select(.current_action=="block", .current_action=="challenge", (.current_action=="default" and .default_action=="block"), (.current_action=="default" and .default_action=="challenge"))'</span></code></pre></figure>
+
+<p>이 쿼리는 현재 액션이 <code class="highlighter-rouge">challenge</code>나 <code class="highlighter-rouge">block</code>으로 되어 있는 모든 룰을 표시해 줍니다.</p>
+
+<p>다음은 아래 PATCH 쿼리를 이용하는 Bash Script를 짜셔서 해당 룰의 mode를 모두 <code class="highlighter-rouge">simulate</code>로 바꿔주면 됩니다.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-rules-edit-rule">https://api.cloudflare.com/#waf-rules-edit-rule</a></p>
+
+<p>끝나셨으면 튜닝 준비가 완료되었습니다. 이제부터는 대시보드에서 로깅되는 WAF 룰을 확인해 가시면서 아래 기준으로 튜닝하시면 됩니다.</p>
+
+<ul>
+  <li>자주 트리거되는 룰: 탐지되는 개별 룰셋의 정탐 여부를 판단하여 <code class="highlighter-rouge">Block</code>(이나 <code class="highlighter-rouge">Challenge</code>)으로 변경 결정</li>
+  <li>판단에 노이즈가 되는 룰: 공격으로 판단되지 않는데, 지속적으로 대시보드에 출현함 - <code class="highlighter-rouge">Disable</code>으로 변경 결정</li>
+</ul>
+
+<h2 id="waf-override-ent-only">WAF Override (ENT Only)</h2>
+
+<p>WAF override allows you to have granular control on WAF rules based on specific URI. As of 2020-06-03, this feature is:</p>
+
+<ul>
+  <li>Enterprise only</li>
+  <li>API only</li>
+</ul>
+
+<p>So you should use API. In this example, I will walk you through on how to disable <code class="highlighter-rouge">Cloudflare WAF - OWASP Ruleset</code> for particular URIs.</p>
+
+<h3 id="retrieve-current-waf-override-rules">Retrieve current WAF Override rules</h3>
+
+<p>Firstly, retrieve the WAF override rules you have in place at the moment.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-overrides-list-uri-controlled-waf-configurations">https://api.cloudflare.com/#waf-overrides-list-uri-controlled-waf-configurations</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">GET</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/overrides?page=1&amp;per_page=50"</span> <span class="p">\</span>
+       <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+       <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+       <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<p>If you’re just getting started with WAF Override, unlikely you get anything from this.</p>
+
+<h3 id="create-a-new-waf-override-rule">Create a new WAF Override rule</h3>
+
+<p>Next, create a WAF override rule to bypass OWASP rulesets for your certain endpoint.</p>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-overrides-create-a-uri-controlled-waf-configuration">https://api.cloudflare.com/#waf-overrides-create-a-uri-controlled-waf-configuration</a></p>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;RULE_DESCRIPTION&gt;</code> : Write human-readable rule description. e.g.: Set OWASP to Simulate to API POST endpoints</li>
+  <li><code class="highlighter-rouge">&lt;YOUR_URI&gt;</code> : List the URIs you want to deploy this change. e.g.: <code class="highlighter-rouge">"api.jeann.net/exampleurl"</code>. This is an array field so you can put multiple urls. e.g.: <code class="highlighter-rouge">"a.jeann.net/url","b.jeann.net/*","c.jeann.net/rrr*"</code>. Wildcard is supported.</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">POST</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/overrides"</span> <span class="p">\</span>
+      <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+      <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+      <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="p">\</span>
+      <span class="o">--</span><span class="n">data</span> <span class="s1">'{"description":"&lt;RULE_DESCRIPTION&gt;","urls":[&lt;YOUR_URI&gt;],"rules":{"981176":"simulate"}}}}'</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+
+<p>Make sure you see success message from your query. <code class="highlighter-rouge">{"981176":"simulate"}</code> part will bypass the OWASP ruleset. Cloudflare Managed Ruleset will still protect the URIs. Also, because we’re putting this rule to simulate, you’ll still be able to see logs from Firewall Events.</p>
+
+<p>Now, verify if the rule was created successfully, by <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#retrieve-current-waf-override-rules">using GET query again.</a></p>
+
+<h3 id="delete-undesired-override-rules">Delete undesired override rules</h3>
+
+<p>Source: <a href="https://api.cloudflare.com/#waf-overrides-delete-uri-controlled-waf-configuration">https://api.cloudflare.com/#waf-overrides-delete-uri-controlled-waf-configuration</a></p>
+
+<p>No need of WAF Override rule anymore? Then you can delete them using DELETE method. Firstly, <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#retrieve-current-waf-override-rules">use this query to get the ID of your overrride rule.</a></p>
+
+<p>You should be able to get the ID that looks like below:</p>
+
+<p><code class="highlighter-rouge">"id": "8594d2aa69e840189ba3328ce3ee5c41"</code></p>
+
+<p>Now, run the below query. Replace <code class="highlighter-rouge">&lt;RULE_ID&gt;</code> to your ID.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">DELETE</span> <span class="s2">"https://api.cloudflare.com/client/v4/zones/&lt;ZONE_ID&gt;/firewall/waf/overrides/&lt;RULE_ID&gt;"</span> <span class="p">\</span>
+      <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Email: &lt;YOUR_EMAIL&gt;"</span> <span class="p">\</span>
+      <span class="o">-</span><span class="no">H</span> <span class="s2">"X-Auth-Key: &lt;API_KEY&gt;"</span> <span class="p">\</span>
+      <span class="o">-</span><span class="no">H</span> <span class="s2">"Content-Type: application/json"</span> <span class="o">|</span> <span class="n">jq</span></code></pre></figure>
+:ET

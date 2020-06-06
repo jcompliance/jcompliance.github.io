@@ -1,0 +1,40 @@
+I"@<p>This code snippet is for people who want to increase cache hit rate especially for search engines and crawlers, so they reduce the efforts of hitting the origin server and potentially make it helpful for SEO.</p>
+
+<p>A disclamer for this, this code is pretty experimental. Google has <a href="https://support.google.com/webmasters/answer/66355?hl=en">cloacking policy</a> that clarifies if the website is to present different contents or URLs to human users and search engines, it will be considered as cloacking which is violation of webmaster guidelines, and will be depriortised for SEO. This code doesn’t aim to display any different contents but it does aim to present cached version of the contents for search engine crawlers. Still there is a risk - understand this before trying.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">addEventListener</span><span class="p">(</span><span class="s1">'fetch'</span><span class="p">,</span> <span class="n">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="n">event</span><span class="p">.</span><span class="nf">respondWith</span><span class="p">(</span><span class="n">handleRequest</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">request</span><span class="p">))</span>
+<span class="p">})</span>
+
+<span class="n">async</span> <span class="n">function</span> <span class="n">handleRequest</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+ 
+  <span class="n">let</span> <span class="n">asn</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">cf</span><span class="p">.</span><span class="nf">asn</span>
+  <span class="n">const</span> <span class="n">useragent</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user-agent'</span><span class="p">)</span>
+   
+ <span class="k">if</span> <span class="p">(</span><span class="n">asn</span> <span class="o">===</span> <span class="s1">'15169'</span> <span class="o">&amp;&amp;</span> <span class="n">useragent</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="s1">'googlebot'</span><span class="p">)</span> <span class="p">){</span>
+    <span class="n">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">useragent</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fetch</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span> <span class="ss">cf: </span><span class="p">{</span> <span class="ss">cacheEverything: </span><span class="kp">true</span> <span class="p">},</span>  <span class="p">}</span>   <span class="p">)</span>
+  <span class="p">}</span>
+ 
+  <span class="k">else</span> <span class="p">{</span>  <span class="k">return</span> <span class="n">fetch</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span>  <span class="ss">cacheTtl: </span><span class="o">-</span><span class="mi">1</span>  <span class="p">}</span>  <span class="p">)</span>  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The code is almost shorter than disclaimer. It’s as simple as this - read ASN and UA, determine if it’s googlebot, if bingo cache the contents at the edge server and serve from it. If it’s NOT googlebot, we are bypassing cache. <code class="highlighter-rouge">cacheTTL: -1</code> does this. So this code is to deploy to the path you don’t intend to cache for human users - if you don’t want to tweak anything and put as-is for human users, code can look like below instead.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">fetch</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+  <span class="p">}</span></code></pre></figure>
+
+<p>This can be helpful for crawler performance because when you look at googlebot’s originating location these bots tend to use Chicago (hits Cloudflare’s ORD d/c), Seattle (hits Cloudflare’s SEA d/c) Taipei (hits Cloudflare’s TPE d/c), etc - and <a href="http://cloudflare.com/network">Cloudflare always has closer edge data center</a> to googlebot compared to the origin server.</p>
+
+<p>If you have performance issue for crawler but you think caching contents for bots is risky to do for your production - then safer alternative is <a href="https://www.cloudflare.com/products/argo-smart-routing/">Argo Smart Routing</a>. This will intelligently find faster route than the usual BGP to go to pull dynamic contents from the origin server, so the more far the origin server is from the edge data centers, the more Argo SR can accelerate. Like if your googlebot traffic is originated from somewhere in the US east coast but your origin server is in Korea and you hold lots of dynamic contents - that’s exactly when Argo can help.</p>
+
+<p>This is my personal template. You can feel free to re-use under your responsibility but please note Cloudflare Solutions Engineers do not:</p>
+
+<ul>
+  <li>Deploy code on customer’s production environment</li>
+  <li>Commit to any liability regarding the proper behaviour/logic of the code</li>
+  <li>Provide code review of customer’s scripts</li>
+</ul>
+
+:ET

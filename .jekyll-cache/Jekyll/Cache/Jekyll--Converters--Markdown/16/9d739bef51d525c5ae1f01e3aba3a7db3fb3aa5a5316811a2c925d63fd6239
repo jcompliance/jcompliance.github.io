@@ -1,0 +1,349 @@
+I"�r<p>자주 질문하시는 유즈케이스에 대해 바로 사용하실 수 있는 API 쿼리문을 (저의 개인적인 편의를 위해) 모아보려고 합니다. 이 포스트에서는 GraphQL 쿼리만 다룹니다. 샘플 쿼리에 포함되어 있는 아래 필드를 본인 정보로 바꾸시고 복사-붙여넣기 하셔서 사용하시면 바로 사용하실 수 있도록 만들었습니다:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;$zone_id&gt;</code> : 쿼리 대상 도메인의 ID. Cloudflare 대시보드의 Overview - API - Zone ID에서 찾으세요.</li>
+  <li><code class="highlighter-rouge">&lt;$datetime_geq&gt;</code> : 특정 시간대와 관련된 로그를 뽑으실 때 시작 타임스탬프로 쿼리에 넣는 값입니다. RFC3339 포맷(e.g.: 2020-05-28T00:00:00Z)을 따르며 UTC 시간대를 사용하세요.</li>
+  <li><code class="highlighter-rouge">&lt;$datetime_leq&gt;</code> : 특정 시간대와 관련된 로그를 뽑으실 때 끝 타임스탬프로 쿼리에 넣는 값입니다. RFC3339 포맷(e.g.: 2020-05-28T01:00:00Z)을 따르며 UTC 시간대를 사용하세요.</li>
+</ul>
+
+<p>BETA 플래그가 붙은 기능들은 공식 제품/기능의 일부가 아님을 유의하시기 바랍니다. 따라서 일반적인 베타 서비스 주의사항이 적용됩니다 - 기능이 추가되거나, 바뀌거나, 중단되거나 혹은 철회될 수 있습니다. 또한 건설적인 피드백을 주시면 베타 서비스에 큰 도움이 됩니다.</p>
+
+<p>이 예제에서는 쿼리를 보내기 위한 클라이언트 프로그램으로 <a href="https://developers.cloudflare.com/analytics/graphql-api/">공식 기술문서 예제와 동일하게 GraphiQL을 씁니다.</a> <a href="https://developers.cloudflare.com/analytics/graphql-api/getting-started/">GraphiQL을 다루는 법에 익숙지 않으시면 여기서 시작하시면 됩니다.</a> GraphiQL 프로그램에서 아래 정보는 <code class="highlighter-rouge">Edit HTTP Headers</code> 버튼을 누르셔서 미리 입력해 두시는 것이 좋습니다.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">X-Auth-Email</code> : 요청 유저의 이메일 주소. Cloudflare 대시보드에 접속하는 이메일 주소를 사용하세요.</li>
+  <li><code class="highlighter-rouge">X-Auth-Key</code> : 요청 유저 인증 키. Cloudflare 대시보드의 My Profile - API Tokens - API Keys - Global API Key에서 찾으세요. 대시보드 접속 암호와 기본적으로 동일하므로, 키를 안전하게 관리하세요.</li>
+</ul>
+
+<p>Cloudflare GraphQL Endpoint: <code class="highlighter-rouge">https://api.cloudflare.com/client/v4/graphql</code></p>
+
+<h1 id="목차">목차</h1>
+
+<ul id="markdown-toc">
+  <li><a href="#목차" id="markdown-toc-목차">목차</a></li>
+  <li><a href="#firewall-events" id="markdown-toc-firewall-events">Firewall Events</a>    <ul>
+      <li><a href="#특정-리퀘스트의-디테일한-분석" id="markdown-toc-특정-리퀘스트의-디테일한-분석">특정 리퀘스트의 디테일한 분석</a></li>
+      <li><a href="#특정-리퀘스트에-부여된-botscore-분석" id="markdown-toc-특정-리퀘스트에-부여된-botscore-분석">특정 리퀘스트에 부여된 botScore 분석</a></li>
+      <li><a href="#각각-보안-제품과-액션에-대한-응답-코드-분석" id="markdown-toc-각각-보안-제품과-액션에-대한-응답-코드-분석">각각 보안 제품과 액션에 대한 응답 코드 분석</a></li>
+      <li><a href="#구글네이버봇-리퀘스트가-사이트에-잘-도달하고-있는지-분석" id="markdown-toc-구글네이버봇-리퀘스트가-사이트에-잘-도달하고-있는지-분석">구글(네이버)봇 리퀘스트가 사이트에 잘 도달하고 있는지 분석</a></li>
+    </ul>
+  </li>
+  <li><a href="#cache-analytics-beta" id="markdown-toc-cache-analytics-beta">Cache Analytics (BETA)</a>    <ul>
+      <li><a href="#특정-리퀘스트의-디테일한-분석-1" id="markdown-toc-특정-리퀘스트의-디테일한-분석-1">특정 리퀘스트의 디테일한 분석</a></li>
+      <li><a href="#캐시되지-않은-top-20개-리퀘스트-분석" id="markdown-toc-캐시되지-않은-top-20개-리퀘스트-분석">캐시되지 않은 Top 20개 리퀘스트 분석</a></li>
+      <li><a href="#특정-시간대에-들어온-리퀘스트의-top-20-clientip-혹은-useragent-분석" id="markdown-toc-특정-시간대에-들어온-리퀘스트의-top-20-clientip-혹은-useragent-분석">특정 시간대에 들어온 리퀘스트의 Top 20 clientIP 혹은 userAgent 분석</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="firewall-events">Firewall Events</h1>
+
+<p>2020년 5월 29일 기준:</p>
+<ul>
+  <li>최대 쿼리 가능 기간: 최근 31일 (2,678,400초)</li>
+  <li>Adaptive Bitrate 샘플링을 이용합니다. (최대 100%)</li>
+</ul>
+
+<h2 id="특정-리퀘스트의-디테일한-분석">특정 리퀘스트의 디테일한 분석</h2>
+
+<p>Firewall Events에 의해 차단된 것으로 보이는 리퀘스트의 RayID를 가지고 있을 때, 어떤 보안 서비스가 왜, 어디서 리퀘스트를 차단한 것인지 분석하는 쿼리입니다. Firewall Event에서 차단된 리퀘스트가 아니면 결과값이 표시되지 않습니다. <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#특정-rayid에-대한-로그-풀링하기">이 경우에는 Logpull을 이용해 상세 필드를 분석해 보세요.</a></p>
+
+<p>차단된 리퀘스트의 RayID로 필터할 예정이므로 해당 정보를 쿼리의 <code class="highlighter-rouge">&lt;$rayid&gt;</code> 필드에 입력하시기 바랍니다.</p>
+
+<p><strong>Query:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">query</span> <span class="p">{</span>
+  <span class="n">viewer</span><span class="p">{</span>
+    <span class="n">zones</span><span class="p">(</span><span class="ss">filter: </span><span class="p">{</span> <span class="ss">zoneTag: </span><span class="vg">$zone_id</span><span class="p">})</span> <span class="p">{</span>
+      <span class="n">firewallEventsAdaptiveGroups</span> <span class="p">(</span><span class="n">limit</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="ss">filter: </span><span class="vg">$filter</span><span class="p">,</span> <span class="ss">orderBy: </span><span class="p">[</span><span class="n">count_DESC</span><span class="p">])</span>
+      <span class="p">{</span>
+        <span class="n">dimensions</span><span class="p">{</span>
+          <span class="n">action</span>
+          <span class="n">source</span>
+          <span class="n">datetime</span>
+          <span class="n">clientIP</span>
+          <span class="n">clientAsn</span>
+          <span class="n">clientCountryName</span>
+          <span class="n">edgeColoName</span>
+          <span class="n">clientRequestHTTPProtocol</span>
+          <span class="n">clientRequestHTTPHost</span>
+          <span class="n">clientRequestPath</span>
+          <span class="n">clientRequestQuery</span>
+          <span class="n">clientRequestScheme</span>
+          <span class="n">clientRequestHTTPMethodName</span>
+          <span class="n">clientRefererHost</span>
+          <span class="n">clientRefererPath</span>
+          <span class="n">clientRefererQuery</span>
+          <span class="n">clientRefererScheme</span>
+          <span class="n">edgeResponseStatus</span>
+          <span class="n">clientASNDescription</span>
+          <span class="n">userAgent</span>
+          <span class="n">kind</span>
+          <span class="n">matchIndex</span>
+          <span class="n">originResponseStatus</span>
+          <span class="n">originatorRayName</span>
+          <span class="n">ruleId</span>
+        <span class="p">}</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">{</span>
+  <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+  <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+    <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span><span class="p">,</span>
+    <span class="s2">"rayName"</span> <span class="p">:</span> <span class="s2">"&lt;$rayid&gt;"</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="특정-리퀘스트에-부여된-botscore-분석">특정 리퀘스트에 부여된 botScore 분석</h2>
+
+<p>2020년 5월 31일 기준, GraphQL Firewall Events 데이터셋은 botScore를 제공하지 않습니다. 추후 바뀔 지 모르니 GraphQL 내 self-documented schema를 확인하세요. 그러나, <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#특정-rayid에-대한-로그-풀링하기">이 쿼리를 이용하시면 특정 리퀘스트에 부여된 botScore과 스코어링 소스를 확인할 수 있습니다.</a> Logpush로도 이용 가능합니다. 분석 대상 리퀘스트의 rayId를 입력하셔서 아래와 같은 (훨씬 많은 필드가 있습니다) 디테일한 정보를 확인하세요:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="s2">"BotScore"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s2">"BotScoreSrc"</span><span class="p">:</span> <span class="s2">"Machine Learning"</span><span class="p">,</span>
+  <span class="s2">"EdgeResponseStatus"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="s2">"OriginResponseStatus"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="s2">"FirewallMatchesActions"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"simulate"</span>
+  <span class="p">],</span>
+  <span class="s2">"FirewallMatchesRuleIDs"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"91576b79149c46678682d91daf9ab61f"</span>
+  <span class="p">],</span>
+  <span class="s2">"FirewallMatchesSources"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"firewallRules"</span>
+  <span class="p">],</span>  </code></pre></figure>
+
+<p><strong>Bot Management가 활성화된 Zone에만 적용됩니다.</strong></p>
+
+<p><a href="/cloudflare/botmanagement/2020/05/31/are-you-a-bot-kr.html">Q: 이 필드 어디에 쓰는데요? A: 여기를 읽어 보세요</a></p>
+
+<h2 id="각각-보안-제품과-액션에-대한-응답-코드-분석">각각 보안 제품과 액션에 대한 응답 코드 분석</h2>
+
+<p>2020년 5월 29일 기준, Firewall Events 대시보드는 많은 디테일한 정보를 보여주지만 HTTP 응답 코드 정보는 노출되지 않고 있습니다. 하지만 API를 직접 사용하시면 볼 수 있습니다. 이 쿼리를 이용하시면 보안 제품의 액션이  <code class="highlighter-rouge">drop</code>, <code class="highlighter-rouge">challenge</code> or <code class="highlighter-rouge">jschallenge</code>였을 때 나간 HTTP 응답 코드 정보를 정렬하여 보여줍니다.</p>
+
+<p><strong>Query:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">query</span> <span class="p">{</span>
+  <span class="n">viewer</span><span class="p">{</span>
+    <span class="n">zones</span><span class="p">(</span><span class="ss">filter: </span><span class="p">{</span> <span class="ss">zoneTag: </span><span class="vg">$zone_id</span><span class="p">})</span> <span class="p">{</span>
+      <span class="n">firewallEventsAdaptiveGroups</span> <span class="p">(</span><span class="n">limit</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="ss">filter: </span><span class="vg">$filter</span><span class="p">,</span> <span class="ss">orderBy: </span><span class="p">[</span><span class="n">count_DESC</span><span class="p">])</span>
+      <span class="p">{</span>
+        <span class="n">count</span>
+        <span class="n">dimensions</span><span class="p">{</span>
+          <span class="n">action</span>
+          <span class="n">source</span>
+          <span class="n">kind</span>
+          <span class="n">edgeResponseStatus</span>
+          <span class="n">originResponseStatus</span>
+        <span class="p">}</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">{</span>
+  <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+  <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+    <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span><span class="p">,</span>
+    <span class="s2">"action_in"</span> <span class="p">:</span> <span class="p">[</span><span class="s2">"drop"</span><span class="p">,</span><span class="s2">"challenge"</span><span class="p">,</span><span class="s2">"jschallenge"</span><span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="구글네이버봇-리퀘스트가-사이트에-잘-도달하고-있는지-분석">구글(네이버)봇 리퀘스트가 사이트에 잘 도달하고 있는지 분석</h2>
+
+<p>검색엔진의 리퀘스트가 Cloudflare 보안 제품에 막히지 않고 사이트를 크롤링하는 것은 매우 중요합니다. 그러므로, 먼저 <a href="https://developers.cloudflare.com/firewall/known-issues-and-faq/#how-does-firewall-rules-handle-traffic-from-known-bots">이 페이지에 있는 지시사항을 따라 known bots을 허용하는 Firewall Rule을 만드십시오.</a> 이후 아래 GraphQL 쿼리를 통해 구글봇이 사이트에 잘 도달하고 있는지, 어느 위치로부터 사이트에 트래픽을 보내고 있는지를 분석할 것입니다.</p>
+
+<p><strong>Query:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">query</span> <span class="p">{</span>
+  <span class="n">viewer</span><span class="p">{</span>
+    <span class="n">zones</span><span class="p">(</span><span class="ss">filter: </span><span class="p">{</span> <span class="ss">zoneTag: </span><span class="vg">$zone_id</span><span class="p">})</span> <span class="p">{</span>
+      <span class="n">firewallEventsAdaptiveGroups</span> <span class="p">(</span><span class="n">limit</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="ss">filter: </span><span class="vg">$filter</span><span class="p">,</span> <span class="ss">orderBy: </span><span class="p">[</span><span class="n">count_DESC</span><span class="p">])</span>
+      <span class="p">{</span>
+        <span class="n">count</span>
+        <span class="n">dimensions</span><span class="p">{</span>
+          <span class="n">action</span>
+          <span class="n">source</span>
+          <span class="n">edgeResponseStatus</span>
+          <span class="n">originResponseStatus</span>
+          <span class="n">edgeColoName</span>
+          <span class="n">ruleId</span>
+          <span class="n">clientAsn</span>
+          <span class="n">userAgent</span>
+        <span class="p">}</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="p">{</span>
+  <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+  <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+      <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span><span class="p">,</span>
+      <span class="s2">"clientAsn"</span> <span class="p">:</span> <span class="s2">"15169"</span><span class="p">,</span>
+      <span class="s2">"userAgent_like"</span> <span class="p">:</span> <span class="s2">"%Googlebot%"</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></figure>
+
+<p>이 쿼리의 결과는 대부분 <code class="highlighter-rouge">"action": "allow"</code>을 포함하고 있어야 합니다. 또한 대부분의 결과가 <code class="highlighter-rouge">"edgeResponseStatus": 200</code>을 포함하고 있어야 합니다. 참고로 404는 괜찮습니다. 그러나 구글봇 리퀘스트가 드랍되고 있거나 HTTP 상태 코드가 403, 5xx 등으로 보인다면 보안 룰과 오리진 서버를 확인하십시오.</p>
+
+<p>쿼리 결과가 전혀 돌아오지 않는다면 그것은 그것대로 사이트에 구글봇 크롤링 리퀘스트가 없다는 의미이므로 다소 수상합니다. (a) 구글봇을 허용하는 Firewall Rule이 제대로 만들어져 있는지 확인하십시오. 그리고 (b) 구글 검색 콘솔에서 웹사이트가 제대로 등록되어 있는지 확인하십시오.</p>
+
+<p>덧: 네이버 검색엔진에 대한 분석쿼리가 필요하시면 Query Variables를 아래 내용으로 변경하세요.</p>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="p">{</span>
+  <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+  <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+      <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span><span class="p">,</span>
+      <span class="s2">"clientAsn"</span> <span class="p">:</span> <span class="s2">"23576"</span><span class="p">,</span>
+      <span class="s2">"userAgent_like"</span> <span class="p">:</span> <span class="s2">"%Yeti%"</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></figure>
+
+<h1 id="cache-analytics-beta">Cache Analytics (BETA)</h1>
+
+<p>2020년 5월 29일 기준:</p>
+<ul>
+  <li>최대 쿼리 가능 기간: 최근 31일 (2,678,400초)</li>
+  <li>Adaptive Bitrate 샘플링을 이용합니다. (최대 1%)</li>
+</ul>
+
+<h2 id="특정-리퀘스트의-디테일한-분석-1">특정 리퀘스트의 디테일한 분석</h2>
+
+<p>안타깝게도, 2020년 5월 29일 기준 Cache Analytics는 최대 1% 적응형 샘플링 데이터를 이용하기 때문에 이 GraphQL 데이터셋을 잘 이용하시는 방법은 경향성 분석을 하시는 것입니다. 단일 리퀘스트의 디테일한 분석을 하시려면 <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#특정-rayid에-대한-로그-풀링하기">Logpull을 이용해 상세 필드를 분석하실 수 있습니다.</a></p>
+
+<p>이 쿼리는 Cache Analytics 노드에서 제공하는 필드가 어떤 형태로 리턴되는지 확인하는 용도로 이용하십시오. <code class="highlighter-rouge">CacheStatus</code>가 <code class="highlighter-rouge">"hit"</code> 이 아닌 랜덤한 리퀘스트를 하나 골라 해당 리퀘스트에 해당하는 디테일을 리턴하는 쿼리입니다.</p>
+
+<p><strong>Query:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">query</span> <span class="p">{</span>
+  <span class="n">viewer</span><span class="p">{</span>
+    <span class="n">zones</span><span class="p">(</span><span class="ss">filter: </span><span class="p">{</span> <span class="ss">zoneTag: </span><span class="vg">$zone_id</span><span class="p">})</span> <span class="p">{</span>
+      <span class="n">httpRequestsAdaptiveGroups</span> <span class="p">(</span><span class="n">limit</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="ss">filter: </span><span class="vg">$filter</span><span class="p">,</span> <span class="ss">orderBy: </span><span class="p">[</span><span class="n">count_DESC</span><span class="p">])</span>
+      <span class="p">{</span>
+        <span class="n">dimensions</span><span class="p">{</span>
+          <span class="n">cacheStatus</span>
+          <span class="n">clientAsn</span>
+          <span class="n">clientCountryName</span>
+          <span class="n">clientDeviceType</span>
+          <span class="n">clientIP</span>
+          <span class="n">clientRequestHTTPHost</span>
+          <span class="n">clientRequestHTTPMethodName</span>
+          <span class="n">clientRequestPath</span>
+          <span class="n">clientRequestQuery</span>
+          <span class="n">clientRequestReferer</span>
+          <span class="n">coloCode</span>
+          <span class="n">datetime</span>
+          <span class="n">edgeResponseContentTypeName</span>
+          <span class="n">edgeResponseStatus</span>
+          <span class="n">edgeWorkerSubrequestParentRayId</span>
+          <span class="n">requestSource</span>
+          <span class="n">sampleInterval</span>
+          <span class="n">upperTierColoName</span>
+          <span class="n">userAgent</span>
+          <span class="n">xRequestedWith</span>
+        <span class="p">}</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="p">{</span>
+    <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+    <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+      <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span><span class="p">,</span>
+      <span class="s2">"cacheStatus_neq"</span> <span class="p">:</span> <span class="s2">"hit"</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></figure>
+
+<h2 id="캐시되지-않은-top-20개-리퀘스트-분석">캐시되지 않은 Top 20개 리퀘스트 분석</h2>
+
+<p>캐시 적중률을 99%까지 높이고 싶은데 현재 어떤 리퀘스트가 왜 캐시되지 않는지 확신이 서지 않으시나요? 이 쿼리를 이용하면 분석 대상 도메인에 대해 캐시되지 않은 Top 20개 콘텐츠가 리퀘스트 갯수와 함께 표시됩니다. 2020년 5월 29일 기준 API 쿼리를 보내시면 리퀘스트의 쿼리 스트링을 포함하여 대시보드보다 정확한 정보를 보여줍니다.</p>
+
+<p><strong>Query:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">query</span> <span class="p">{</span>
+  <span class="n">viewer</span><span class="p">{</span>
+    <span class="n">zones</span><span class="p">(</span><span class="ss">filter: </span><span class="p">{</span> <span class="ss">zoneTag: </span><span class="vg">$zone_id</span><span class="p">})</span> <span class="p">{</span>
+      <span class="n">httpRequestsAdaptiveGroups</span> <span class="p">(</span><span class="n">limit</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="ss">filter: </span><span class="vg">$filter</span><span class="p">,</span> <span class="ss">orderBy: </span><span class="p">[</span><span class="n">count_DESC</span><span class="p">])</span>
+      <span class="p">{</span>
+        <span class="n">count</span>
+        <span class="n">dimensions</span><span class="p">{</span>
+          <span class="n">cacheStatus</span>
+          <span class="n">clientRequestHTTPHost</span>
+          <span class="n">clientRequestPath</span>
+          <span class="n">clientRequestQuery</span>
+          <span class="n">edgeResponseContentTypeName</span>
+        <span class="p">}</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">   <span class="p">{</span>
+    <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+    <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+      <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span><span class="p">,</span>
+      <span class="s2">"cacheStatus_in"</span> <span class="p">:</span> <span class="p">[</span><span class="s2">"dynamic"</span><span class="p">,</span><span class="s2">"none"</span><span class="p">,</span><span class="s2">"miss"</span><span class="p">,</span><span class="s2">"expired"</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></figure>
+
+<h2 id="특정-시간대에-들어온-리퀘스트의-top-20-clientip-혹은-useragent-분석">특정 시간대에 들어온 리퀘스트의 Top 20 clientIP 혹은 userAgent 분석</h2>
+
+<p>특정 시간대에 들어온 리퀘스트의 Top 20 clientIP 정보나, userAgent 정보 등을 보시고 싶다면 Cache Analytics를 이용할 수 있습니다. 몇 가지 주의사항이 적용됩니다.</p>
+
+<ul>
+  <li>2020-06-02 기준, 최대 쿼리 가능 기간은 72시간(259,200초)입니다. 따라서 “5월 1일부터 31일까지 로그가 필요해요” 등의 요구사항을 해결할 수 없습니다.</li>
+  <li>2020-06-02 기준, 최대 1%의 샘플 데이터를 활용합니다. 감안해서 쿼리하셔야 합니다.</li>
+</ul>
+
+<p>한 달치 정보가 필요하시거나, 100% 데이터를 활용하셔야 한다면, <a href="/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#특정-시간대에-들어온-리퀘스트의-top-20-clientip-혹은-useragent-분석">엔터프라이즈 로그 기능을 사용하셔야 합니다. 이 글을 참고하세요.</a></p>
+
+<p><strong>Query:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">query</span> <span class="p">{</span>
+  <span class="n">viewer</span><span class="p">{</span>
+    <span class="n">zones</span><span class="p">(</span><span class="ss">filter: </span><span class="p">{</span> <span class="ss">zoneTag: </span><span class="vg">$zone_id</span><span class="p">})</span> <span class="p">{</span>
+      <span class="n">httpRequestsAdaptiveGroups</span> <span class="p">(</span><span class="n">limit</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="ss">filter: </span><span class="vg">$filter</span><span class="p">,</span> <span class="ss">orderBy: </span><span class="p">[</span><span class="n">count_DESC</span><span class="p">])</span>
+      <span class="p">{</span>
+        <span class="n">count</span>
+        <span class="n">dimensions</span><span class="p">{</span>
+         <span class="n">clientIP</span>
+        <span class="p">}</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Query Variables:</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">   <span class="p">{</span>
+    <span class="s2">"zone_id"</span> <span class="p">:</span> <span class="s2">"&lt;$zone_id&gt;"</span><span class="p">,</span>
+    <span class="s2">"filter"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"datetime_geq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_geq&gt;"</span><span class="p">,</span>
+      <span class="s2">"datetime_leq"</span> <span class="p">:</span> <span class="s2">"&lt;$datetime_leq&gt;"</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">clientIP</code>를 <code class="highlighter-rouge">userAgent</code>로 바꾸시면 userAgent 정보를 질의하실 수 있습니다.</p>
+:ET

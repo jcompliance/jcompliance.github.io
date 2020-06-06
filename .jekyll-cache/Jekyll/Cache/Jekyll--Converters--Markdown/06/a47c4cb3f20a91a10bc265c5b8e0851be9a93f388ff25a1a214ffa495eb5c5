@@ -1,0 +1,42 @@
+I"�<p>If you use Cloudflare Workers, you can run your small code snippet at the edge. In this example, I read country information from request headers and redirected requests to corresponding language page of my blog.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">addEventListener</span><span class="p">(</span><span class="s1">'fetch'</span><span class="p">,</span> <span class="n">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="n">event</span><span class="p">.</span><span class="nf">respondWith</span><span class="p">(</span><span class="n">fetchAndApply</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">request</span><span class="p">))</span>
+<span class="p">})</span>
+
+<span class="n">async</span> <span class="n">function</span> <span class="n">fetchAndApply</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="n">const</span> <span class="n">clientCountry</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'CF-IPCountry'</span><span class="p">)</span>
+  <span class="n">let</span> <span class="n">colo</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">cf</span><span class="p">.</span><span class="nf">colo</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">clientCountry</span> <span class="o">===</span> <span class="s1">'KR'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">new</span> <span class="no">Response</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="p">{</span>
+        <span class="ss">status: </span><span class="mi">301</span><span class="p">,</span>
+        <span class="ss">headers: </span><span class="p">{</span> <span class="s1">'Location'</span><span class="p">:</span> <span class="s1">'https://blog.jeann.net/kr.html'</span><span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">)}</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">clientCountry</span> <span class="o">===</span> <span class="s1">'FR'</span> <span class="o">|</span> <span class="n">colo</span> <span class="o">===</span> <span class="s1">'CDG'</span><span class="p">)</span> <span class="p">{</span> 
+       <span class="k">return</span> <span class="n">new</span> <span class="no">Response</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="p">{</span>
+        <span class="ss">status: </span><span class="mi">301</span><span class="p">,</span>
+        <span class="ss">headers: </span><span class="p">{</span> <span class="s1">'Location'</span><span class="p">:</span> <span class="s1">'https://blog.jeann.net/fr.html'</span><span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">)}</span>
+
+  <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">fetch</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">url</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This code reads client country (Cloudflare uses Maxmind for this as of 2020.) and edge data center(colo). If incoming requests are from South Korea, they will be redirected to <code class="highlighter-rouge">/kr.html</code>. if the requests are from France or they hit Cloudflare’s France colo <code class="highlighter-rouge">CDG</code>, they’ll be redirected to <code class="highlighter-rouge">/fr.html</code>. Other requests are directed to root path.</p>
+
+<p>This snippet is basic form of conditional redirection but is widely used because without having to have visitors to choose the language they can localize the business under the same FQDN. Here, instead of using client country information, reading <code class="highlighter-rouge">accept-language</code> to determine preferred locale can be considered as well.</p>
+
+<p>This is my personal template. You can feel free to re-use under your responsibility but please note Cloudflare Solutions Engineers do not:</p>
+
+<ul>
+  <li>Deploy code on customer’s production environment</li>
+  <li>Commit to any liability regarding the proper behaviour/logic of the code</li>
+  <li>Provide code review of customer’s scripts</li>
+</ul>
+:ET

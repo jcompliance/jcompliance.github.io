@@ -1,0 +1,75 @@
+I"r.<p>Normally, you use Cloudflare Page Rules to do URL redirection or HTTP -&gt; HTTPS redirection. However, if you have too many number of rules you may encounter the number of rules limit. Below is a simple code snippet to match request protocol and url and handle redirection accordingly.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">addEventListener</span><span class="p">(</span><span class="s1">'fetch'</span><span class="p">,</span> <span class="n">async</span> <span class="n">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="n">event</span><span class="p">.</span><span class="nf">respondWith</span><span class="p">(</span><span class="n">handleRequest</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">request</span><span class="p">))</span>
+<span class="p">})</span>
+
+<span class="n">async</span> <span class="n">function</span> <span class="n">handleRequest</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">let</span> <span class="n">requestURL</span> <span class="o">=</span> <span class="n">new</span> <span class="no">URL</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">url</span><span class="p">)</span>
+  <span class="n">requestProtocol</span> <span class="o">=</span> <span class="n">requestURL</span><span class="p">.</span><span class="nf">protocol</span>
+  <span class="n">requestHost</span> <span class="o">=</span> <span class="n">requestURL</span><span class="p">.</span><span class="nf">hostname</span>
+  <span class="n">requestPath</span> <span class="o">=</span> <span class="n">requestURL</span><span class="p">.</span><span class="nf">pathname</span>
+  <span class="n">requestQuery</span> <span class="o">=</span> <span class="n">requestURL</span><span class="p">.</span><span class="nf">search</span>
+
+  <span class="sr">//</span> <span class="n">replace</span> <span class="no">Always</span> <span class="no">Use</span> <span class="no">HTTPS</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">requestProtocol</span> <span class="o">===</span> <span class="s1">'http:'</span> <span class="o">&amp;&amp;</span> <span class="n">request</span><span class="p">.</span><span class="nf">url</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">/.*\/\/blog\.jeann\.net\/redirect\/http.*/</span><span class="p">)){</span>
+    <span class="k">return</span> <span class="no">Response</span><span class="p">.</span><span class="nf">redirect</span><span class="p">(</span><span class="s1">'https://'</span><span class="o">+</span><span class="n">requestHost</span><span class="o">+</span><span class="n">requestPath</span><span class="p">,</span> <span class="mi">301</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="sr">//</span> <span class="n">replace</span> <span class="no">Forwarding</span> <span class="no">URL</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">url</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">/(http|https):\/\/blog\.jeann\.net\/redirect\/url.*/</span><span class="p">)){</span>
+    <span class="k">return</span> <span class="no">Response</span><span class="p">.</span><span class="nf">redirect</span><span class="p">(</span><span class="s1">'https://jeann.net/wp-content/uploads/2020/04/EWaw0wLUMAUUTq2.jpeg'</span><span class="p">,</span> <span class="mi">302</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">fetch</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>As of 2020-05-31, this code is deployed in my <code class="highlighter-rouge">blog.jeann.net/redirect*</code> route for testing.
+Run below query to test HTTP-&gt;HTTPS redirection:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">terminal</span><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">svo</span> <span class="sr">/dev/nu</span><span class="n">ll</span><span class="o">/</span> <span class="s2">"http://blog.jeann.net/redirect/http?randomquery"</span></code></pre></figure>
+
+<p>Expected result:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span> <span class="no">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">301</span> <span class="no">Moved</span> <span class="no">Permanently</span>
+<span class="o">&lt;</span> <span class="no">Date</span><span class="p">:</span> <span class="no">Sun</span><span class="p">,</span> <span class="mi">31</span> <span class="no">May</span> <span class="mi">2020</span> <span class="mo">02</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">21</span> <span class="no">GMT</span>
+<span class="o">&lt;</span> <span class="no">Content</span><span class="o">-</span><span class="no">Length</span><span class="p">:</span> <span class="mi">0</span>
+<span class="o">&lt;</span> <span class="no">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="o">&lt;</span> <span class="no">Set</span><span class="o">-</span><span class="no">Cookie</span><span class="p">:</span> <span class="n">__cfduid</span><span class="o">=&lt;</span><span class="no">REDACTED</span><span class="o">&gt;</span><span class="p">;</span> <span class="n">expires</span><span class="o">=</span><span class="no">Tue</span><span class="p">,</span> <span class="mi">30</span><span class="o">-</span><span class="no">Jun</span><span class="o">-</span><span class="mi">20</span> <span class="mo">02</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">21</span> <span class="no">GMT</span><span class="p">;</span> <span class="n">path</span><span class="o">=</span><span class="sr">/; domain=.blog.jeann.net; HttpOnly; SameSite=Lax
+&lt; Location: https:/</span><span class="o">/</span><span class="n">blog</span><span class="p">.</span><span class="nf">jeann</span><span class="p">.</span><span class="nf">net</span><span class="o">/</span><span class="n">redirect</span><span class="o">/</span><span class="n">http</span>
+<span class="o">&lt;</span> <span class="n">cf</span><span class="o">-</span><span class="n">request</span><span class="o">-</span><span class="ss">id: </span><span class="mo">030</span><span class="n">a33fdc40000d9c0bf130200000001</span>
+<span class="o">&lt;</span> <span class="no">Set</span><span class="o">-</span><span class="no">Cookie</span><span class="p">:</span> <span class="n">__cf_bm</span><span class="o">=&lt;</span><span class="no">REDACTED</span><span class="o">&gt;</span><span class="p">;</span> <span class="n">path</span><span class="o">=</span><span class="sr">/; expires=Sun, 31-May-20 03:11:21 GMT; domain=.blog.jeann.net; HttpOnly; SameSite=None
+&lt; Server: cloudflare
+&lt; CF-RAY: 59bd55dc6b64d9c0-SIN</span></code></pre></figure>
+
+<p>You don’t see the headers my origin sends, which means the redirection happens at Cloudflare side.</p>
+
+<p>Run below query to test URL forwarding redirection:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">terminal</span><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">svo</span> <span class="sr">/dev/nu</span><span class="n">ll</span><span class="o">/</span> <span class="s2">"https://blog.jeann.net/redirect/urltest?iwantsundae"</span></code></pre></figure>
+
+<p>Expected result:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span> <span class="no">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">302</span> <span class="no">Found</span>
+<span class="o">&lt;</span> <span class="no">Date</span><span class="p">:</span> <span class="no">Sun</span><span class="p">,</span> <span class="mi">31</span> <span class="no">May</span> <span class="mi">2020</span> <span class="mo">02</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">40</span> <span class="no">GMT</span>
+<span class="o">&lt;</span> <span class="no">Content</span><span class="o">-</span><span class="no">Length</span><span class="p">:</span> <span class="mi">0</span>
+<span class="o">&lt;</span> <span class="no">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="o">&lt;</span> <span class="no">Set</span><span class="o">-</span><span class="no">Cookie</span><span class="p">:</span> <span class="n">__cfduid</span><span class="o">=&lt;</span><span class="no">REDACTED</span><span class="o">&gt;</span><span class="p">;</span> <span class="n">expires</span><span class="o">=</span><span class="no">Tue</span><span class="p">,</span> <span class="mi">30</span><span class="o">-</span><span class="no">Jun</span><span class="o">-</span><span class="mi">20</span> <span class="mo">02</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">40</span> <span class="no">GMT</span><span class="p">;</span> <span class="n">path</span><span class="o">=</span><span class="sr">/; domain=.blog.jeann.net; HttpOnly; SameSite=Lax
+&lt; Location: https:/</span><span class="o">/</span><span class="n">jeann</span><span class="p">.</span><span class="nf">net</span><span class="o">/</span><span class="n">wp</span><span class="o">-</span><span class="n">content</span><span class="o">/</span><span class="n">uploads</span><span class="o">/</span><span class="mi">2020</span><span class="o">/</span><span class="mo">04</span><span class="o">/</span><span class="no">EWaw0wLUMAUUTq2</span><span class="p">.</span><span class="nf">jpeg</span>
+<span class="o">&lt;</span> <span class="n">cf</span><span class="o">-</span><span class="n">request</span><span class="o">-</span><span class="ss">id: </span><span class="mo">030</span><span class="n">a37f1660000dcc2880c0200000001</span>
+<span class="o">&lt;</span> <span class="no">Set</span><span class="o">-</span><span class="no">Cookie</span><span class="p">:</span> <span class="n">__cf_bm</span><span class="o">=&lt;</span><span class="no">REDACTED</span><span class="o">&gt;</span><span class="p">;</span> <span class="n">path</span><span class="o">=</span><span class="sr">/; expires=Sun, 31-May-20 03:15:40 GMT; domain=.blog.jeann.net; HttpOnly; SameSite=None
+&lt; Server: cloudflare
+&lt; CF-RAY: 59bd5c2f09d3dcc2-SIN</span></code></pre></figure>
+
+<p>Or simply try to visit the link via the browser <a href="https://blog.jeann.net/redirect/url">https://blog.jeann.net/redirect/url</a> to check redirection works fine.</p>
+
+<p>This is my personal template. You can feel free to re-use under your responsibility but please note Cloudflare Solutions Engineers do not:</p>
+
+<ul>
+  <li>Deploy code on customer’s production environment</li>
+  <li>Commit to any liability regarding the proper behaviour/logic of the code</li>
+  <li>Provide code review of customer’s scripts</li>
+</ul>
+
+<p>The code itself is written long time ago. Still working fine, but now Cloudflare official site has a template for <a href="https://developers.cloudflare.com/workers/templates/pages/bulk_redirects/">bulk redirects use case</a> you may go and refer to that code for your environment as it looks more optimized for bulky urls.</p>
+:ET

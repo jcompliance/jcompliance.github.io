@@ -1,0 +1,34 @@
+I"<p>Cloudflare Workers를 사용하면 코드 스니펫을 엣지 데이터 센터에서 돌릴 수 있습니다. 이 예제에서는 리퀘스트 헤더에서 국가 정보를 읽어 블로그의 해당하는 언어 페이지로 리디렉션합니다.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">addEventListener</span><span class="p">(</span><span class="s1">'fetch'</span><span class="p">,</span> <span class="n">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="n">event</span><span class="p">.</span><span class="nf">respondWith</span><span class="p">(</span><span class="n">fetchAndApply</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="nf">request</span><span class="p">))</span>
+<span class="p">})</span>
+
+<span class="n">async</span> <span class="n">function</span> <span class="n">fetchAndApply</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="n">const</span> <span class="n">clientCountry</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'CF-IPCountry'</span><span class="p">)</span>
+  <span class="n">let</span> <span class="n">colo</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">cf</span><span class="p">.</span><span class="nf">colo</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">clientCountry</span> <span class="o">===</span> <span class="s1">'KR'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">new</span> <span class="no">Response</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="p">{</span>
+        <span class="ss">status: </span><span class="mi">301</span><span class="p">,</span>
+        <span class="ss">headers: </span><span class="p">{</span> <span class="s1">'Location'</span><span class="p">:</span> <span class="s1">'https://blog.jeann.net/kr.html'</span><span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">)}</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">clientCountry</span> <span class="o">===</span> <span class="s1">'FR'</span> <span class="o">|</span> <span class="n">colo</span> <span class="o">===</span> <span class="s1">'CDG'</span><span class="p">)</span> <span class="p">{</span> 
+       <span class="k">return</span> <span class="n">new</span> <span class="no">Response</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="p">{</span>
+        <span class="ss">status: </span><span class="mi">301</span><span class="p">,</span>
+        <span class="ss">headers: </span><span class="p">{</span> <span class="s1">'Location'</span><span class="p">:</span> <span class="s1">'https://blog.jeann.net/fr.html'</span><span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">)}</span>
+
+  <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">fetch</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">url</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>이 코드는 국가 정보 (Cloudflare는 2020년 기준 이를 위해 Maxmind를 사용합니다) 와 엣지 데이터센터 (colo) 정보를 읽습니다. 국가 정보가 한국일 경우 리퀘스트는 <code class="highlighter-rouge">/kr.html</code> 로 리디렉션됩니다. 국가 정보가 프랑스이거나 Cloudflare의 파리 데이터 센터 <code class="highlighter-rouge">CDG</code>에 히트한 경우 리퀘스트는 <code class="highlighter-rouge">/fr.html</code>로 리디렉션됩니다. 해당 없을 경우 root path(영문 페이지)로 응답합니다.</p>
+
+<p>이 스니펫은 기본적인 조건부 리디렉션입니다만 방문자가 언어정보를 직접 선택하지 않고도 같은 FQDN 내에서 컨텐츠를 로컬라이즈할 수 있어 널리 사용됩니다. 국가 정보 대신 리퀘스트 헤더의 <code class="highlighter-rouge">accept-language</code>를 읽어 브라우저가 선호하는 언어셋을 판단하여 리디렉션 하는 것도 고려할 수 있습니다.</p>
+:ET
