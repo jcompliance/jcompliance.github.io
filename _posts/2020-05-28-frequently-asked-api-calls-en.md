@@ -362,7 +362,7 @@ If your thought is close to **'I'd like to start from Cloudflare's recommended m
 ### Turn on OWASP rules.
 {:.no_toc}
 
-[Have a read about how OWASP ruleset works in Cloudflare WAF here)(https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-#sJbboLurEVhipzWYJQnyz). In this section we will turn on every-related OWASP rules to your application, to have good detection rate.
+[Have a read about how OWASP ruleset works in Cloudflare WAF here](https://support.cloudflare.com/hc/en-us/articles/200172016-Understanding-the-Cloudflare-Web-Application-Firewall-WAF-#sJbboLurEVhipzWYJQnyz). In this section we will turn on every-related OWASP rules to your application, to have good detection rate.
 
 Firstly, use below query to retrieve package ID of `OWASP ModSecurity Core Rule Set`.
 
@@ -410,14 +410,14 @@ While fine-tuning, look at `ruleId: 981176` events and see if they're legit or n
 
 Once fine-tuning is done, the end goal is to have `Sensitivity: High` / `Action: Block` as global set except specific paths that you set.
 
-### Cloudflare WAF 룰의 액션을 최소 Simulate 모드로 올리기
+### Set actions of Cloudflare managed rules as minimum simulate.
 {:.no_toc}
 
-2700만개(2020-06-06 기준) Cloudflare 고객서비스 중, 몇 곳에서 오탐 가능성이 제기되어 Default 동작이 `Disabled`로 되어 있는 룰들이 있습니다. `ruleId 100001: Anomaly:Header:User-Agent - Missing` 이 좋은 예시인데요, user-Agent 필드가 없는 리퀘스트는 보통 정상으로 판단하지 않습니다. 그러나 허술하게 짜여진 커스텀 봇을 다 잡아내기 때문에 이런 봇을 의도적으로 돌리는 몇몇 사이트에서는 오탐으로 판단하실 수도 있습니다. Cloudflare는 2700만개(2020-06-06 기준) 고객서비스를 기준으로 잡으므로 노이즈를 줄이기 위해 이러한 룰들은 로깅 없이 꺼져 있습니다. 고객사 입장에서는 이렇게 꺼져 있는 룰들을 로깅 모드 `Simulate`로 동작으로 바꾸시면, 방어 대상 사이트에 들어오는 리퀘스트의 현재 상태를 알아본 뒤, 이후에 액션 레벨을 높이실지 혹은 낮추실지를 결정하실 수 있습니다.
+There're WAF rules with action:`Disabled` because they're deprecated, or few of Cloudflare customers' application out of 27M(as of 2020-06-06) reported false positives. This `ruleId 100001: Anomaly:Header:User-Agent - Missing` is a good example: if a request doesn't have user-Agent it is normally safe to say it's anomaly, but if you run this rule it will catch lots of not-thoroughly-made custom bot requests so if you do have purposeful bots like this you may feel it's false positive. Cloudflare disables this kind of rules not to have too much noise to 27M applications. However you may want to still see if requests to your application triggers even these rules to catch them better, by changing the action from `disable` to `simulate`.
 
-따라서 여기서는 `Disable`된 룰들을 모두 찾아내고 `Simulate`로 바꾸는 법을 알아볼 것입니다.
+We will try to catch all `disabled` rules and how to change them to `simulate`.
 
-먼저, 아래 API를 써서 `Cloudflare Managed Ruleset`의 패키지 ID를 얻어오십시오. 
+Firstly, use the below API to get package ID of **Cloudflare Managed Ruleset**.
 
 Source: [https://api.cloudflare.com/#waf-rule-packages-properties](https://api.cloudflare.com/#waf-rule-packages-properties)
 
@@ -425,7 +425,7 @@ Source: [https://api.cloudflare.com/#waf-rule-packages-properties](https://api.c
 curl -s -H "X-Auth-Email: <YOUR_EMAIL>" -H "X-Auth-Key: <API_KEY>" -H "Content-Type: application/json" "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/firewall/waf/packages" | jq -r '.result[] | {package: .name, id: .id}'
 {% endhighlight %}
 
-아래 쿼리에서 방금 얻어온 `<PACKAGE_ID>` 부분을 붙여넣어 아래 API 콜을 돌리십시오.
+Run below query using `<PACKAGE_ID>` you just retrieved.
 
 Source: [https://api.cloudflare.com/#waf-rules-list-rules](https://api.cloudflare.com/#waf-rules-list-rules)
 
@@ -433,56 +433,56 @@ Source: [https://api.cloudflare.com/#waf-rules-list-rules](https://api.cloudflar
 curl -s -H "X-Auth-Email: <YOUR_EMAIL>" -H "X-Auth-Key: <API_KEY>" -H "Content-Type: application/json" "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/firewall/waf/packages/<PACKAGE_ID>/rules?per_page=999&page=1" | jq -cr '.result[] | {id: .id, current_action: .mode, default_action: .default_mode} | select(.default_action=="disable" and .current_action=="default", .current_action=="disable")'
 {% endhighlight %}
 
-이 쿼리는 현재 액션이 `disable` 로 설정된 모든 룰과 현재 액션을 표시해 줍니다.
+This query will list all rules with current action set as `disable`.
 
-다음은 아래 PATCH 쿼리를 이용하는 Bash Script를 짜셔서 mode를 모두 `simulate`로 바꿔주면 됩니다.
+Next step is to write a bash script using the below PATCH query to change their mode to `simulate`.
 
 Source: [https://api.cloudflare.com/#waf-rules-edit-rule](https://api.cloudflare.com/#waf-rules-edit-rule)
 
-끝나셨으면 튜닝 준비가 완료되었습니다. 이제부터는 대시보드에서 로깅되는 WAF 룰을 확인해 가시면서 아래 기준으로 튜닝하시면 됩니다.
+Then you're ready to start fine-tune. From now on please try to check which WAF rules are triggered, and fine-tune with below criteria;
 
-- 판단에 노이즈가 되는 룰: 공격으로 판단되지 않는데, 지속적으로 대시보드에 출현함 - `Disable`으로 변경 결정
-- 더욱 가혹한(?) 처벌이 필요한 룰: 룰을 트리거하는 리퀘스트들이 매우 수상한데, 현재 액션이 `Simulate`나 `Challenge`로 되어 있음 - `Block`으로 변경 결정
+- Noisy rules: Not an attack for your application but you keep seeing it. Consider changing it to `disable`
+- Rules need harder penalty: Definitely not legitimate suspicious requests, but action set as `simulate` or `challenge`. Consider changing it to `block`.
 
 ## Minimize false positives
 
-Cloudflare WAF를 처음 활성화하시면, 2020-06-06 기준, 413개의 Cloudflare Managed Ruleset과, 2491+개의 OWASP ModSecurity Ruleset이 Default 모드로 동작합니다. Default 모드란 2,700만개의 Cloudflare 고객 서비스를 가장 최저의 오탐율(False Positive)과 미탐율(False Negative)로 보호해 드리기 위한 추천 모드입니다. 
+As of 2020-06-06, you have 413 rules in Cloudflare Managed Ruleset and 2491+ rules in OWASP ModSecurity Ruleset, and they are in 'default mode' when you just turned WAF on. Default mode is what Cloudflare recommends with minimum false positives and minimum false negatives, based on our observation at 27M(as of 2020-06-06) applications on the network.
 
-따라서 이 모드를 그대로 활용하시기를 추천하는 한편, 어플리케이션마다의 특성에 맞게, 그리고 고객사의 민감도에 맞게 fine-tuning 하실 수 있도록 Enterprise 고객에 한정하여 지원해 드리고 있습니다.
+While default mode is our recommendation, the internet is immense, and you will have your application & request flow. So based on your preference and sensitivity you may want to fine-tune WAF rules and it is totally encouraged.
 
-Fine-tuning의 시작점을, **'실트래픽에 아무런 영향이 없도록, 무조건 시뮬레이션부터 시작하고 싶다'** 로 잡으시는 경우 - 보통 안정성을 가장 중시하시는 서비스는 여기서 시작합니다 - 이 섹션이 도움이 될 것입니다. 이 방식으로 가시는 경우 차단 없이 '탐지 모드' 로 시작합니다. 다만 튜닝에 시간을 오래 끌지 않는 편이 좋습니다. 알려진 익스플로잇도 막지 않는 수준에서 시작하기 때문입니다.
+If your thought is close to **'I should NOT affect any of user request at the moment. I need to start from detecting whatever looks malicious.'**, this section is yours. Normally applicable when your sensitivity to availability is high. We'll start off from setting WAF as *detection mode*, however make sure you complete your fine-tuning as quick as possible because this mode won't take action to even known exploits.
 
-### OWASP WAF 룰을 모두 켜기
+### Turn on OWASP rules.
 {:.no_toc}
 
-먼저, OWASP ModSecurity Core Ruleset에서, 방어 대상 고객서비스와 유관한 모든 구현된 룰들을 켤 것입니다. [이 부분을 참고하세요.](/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#owasp-waf-%EB%A3%B0%EC%9D%84-%EB%AA%A8%EB%91%90-%EC%BC%9C%EA%B8%B0)
+Firstly, we will turn on every-related OWASP rules to your application, to have good detection rate. [Refer to this part.](/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#turn-on-owasp-rules)
 
-### OWASP 룰의 민감도와 액션을 조정
+### Adjust sensitivity and action of OWASP rules.
 {:.no_toc}
 
-`Sensitivity: Low` / `Action: Simulate` 로 설정해 주세요.
+Set it as `Sensitivity: Low` / `Action: Simulate` 
 
-궁극적으로는 [오탐이 발생하는 특정 endpoint를 튜닝 과정에서 예외 처리하면서](/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#waf-룰-세부-조정-ent-only) 민감도를 Medium, 최종적으로는 `High`로 올리는 것이 좋습니다. 민감도 High에서만 발견되는 특정 익스플로잇들이 있기 때문입니다.
+[While customizing some endpoints with false positives during fine-tuning](/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#waf-override-ent-only), you will have to gradually increase the sensivity to medium, ultimately high. That’s because there are few exploits that are caught in only sensitivity:high.
 
-액션도 마찬가지입니다. Simulate 모드로 튜닝을 시작하시되, [오탐이 발생하는 특정 endpoint를 튜닝 과정에서 예외 처리하면서](/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-ko.html#waf-룰-세부-조정-ent-only) 최종 Action은 `Block`이 되는 것이 좋습니다. 그래야 OWASP 취약점을 노리는 악성 공격자의 리퀘스트를 실제 차단하실 수 있습니다.
+Same for action. You can start from `action:simulate`, [while customizing some endpoints with false positives during fine-tuning](/cloudflare/analytics/2020/05/28/frequently-asked-api-calls-en.html#waf-override-ent-only), you will have to set action as block as final. Block is the action which can actually drop the malicious requests from not only bots, but also humans with bad intention.
 
-튜닝 과정에서 `ruleId: 981176`으로 표시되는 OWASP 룰과 트리거되는 Path, UA등을 지켜보면서 예외 처리를 진행하세요.
+While fine-tuning, look at `ruleId: 981176` events and see if they’re legit or not, and proceed with adjustments.
 
-튜닝이 끝나면 예외처리된 특정 Path 외에 전역 룰은 `Sensitivity: High` / `Action: Block` 으로 변경하는 것이 목표입니다.
+Once fine-tuning is done, the end goal is to have `Sensitivity: High` / `Action: Block` as global set except specific paths that you set.
 
-### Cloudflare WAF 룰의 모든 액션을 Simulate로 변경
+### Set actions of all Cloudflare managed rules as simulate.
 {:.no_toc}
 
-Cloudflare WAF는 2700만개(2020-06-06 기준) Cloudflare 고객서비스 대상으로 가장 낮은 미탐율/오탐율을 보이는 추천 액션 설정(Default Mode) 이 있습니다. 각 액션은 아래와 같습니다.
+Default mode is what Cloudflare recommends with minimum false positives and minimum false negatives, based on our observation at 27M(as of 2020-06-06) applications on the network. Each action means below:
 
-- Disable : 허용
-- Simulate : 허용하지만, 이벤트를 로그
-- Challenge : CAPTCHA를 통과하면 허용
-- Block : 차단
+- Disable : Bypass WAF.
+- Simulate : No action, but log the event.
+- Challenge : Present CAPTCHA. If CAPTCHA success, give access to content.
+- Block : Drop
 
-WAF를 소위 **탐지 모드**로 동작시키기 위해 `Challenge`, `Block`, (Optional: `Disable` 포함)으로 동작하는 룰을 모두 `Simulate`로 바꿀 것입니다.
+To run WAF as so-called *detection mode*, we'll change action from `challenge` and `block` (and optionally `disable`) to `simulate`.
 
-먼저, 아래 API를 써서 `Cloudflare Managed Ruleset`의 패키지 ID를 얻어오십시오. 
+Firstly, use the below API to get package ID of Cloudflare Managed Ruleset.
 
 Source: [https://api.cloudflare.com/#waf-rule-packages-properties](https://api.cloudflare.com/#waf-rule-packages-properties)
 
@@ -490,7 +490,7 @@ Source: [https://api.cloudflare.com/#waf-rule-packages-properties](https://api.c
 curl -s -H "X-Auth-Email: <YOUR_EMAIL>" -H "X-Auth-Key: <API_KEY>" -H "Content-Type: application/json" "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/firewall/waf/packages" | jq -r '.result[] | {package: .name, id: .id}'
 {% endhighlight %}
 
-아래 쿼리에서 방금 얻어온 `<PACKAGE_ID>` 부분을 붙여넣어 아래 API 콜을 돌리십시오.
+Run below query using `<PACKAGE_ID>` you just retrieved.
 
 Source: [https://api.cloudflare.com/#waf-rules-list-rules](https://api.cloudflare.com/#waf-rules-list-rules)
 
@@ -498,16 +498,17 @@ Source: [https://api.cloudflare.com/#waf-rules-list-rules](https://api.cloudflar
 curl -s -H "X-Auth-Email: <YOUR_EMAIL>" -H "X-Auth-Key: <API_KEY>" -H "Content-Type: application/json" "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/firewall/waf/packages/<PACKAGE_ID>/rules?per_page=999&page=1" | jq -cr '.result[] | {id: .id, current_action: .mode, default_action: .default_mode} | select(.current_action=="block", .current_action=="challenge", (.current_action=="default" and .default_action=="block"), (.current_action=="default" and .default_action=="challenge"))'
 {% endhighlight %}
 
-이 쿼리는 현재 액션이 `challenge`나 `block`으로 되어 있는 모든 룰을 표시해 줍니다.
+This query will list all rules with current action set as `challenge` or `block`.
 
-다음은 아래 PATCH 쿼리를 이용하는 Bash Script를 짜셔서 해당 룰의 mode를 모두 `simulate`로 바꿔주면 됩니다.
+Next step is to write a bash script using the below PATCH query to change their mode to `simulate`.
 
 Source: [https://api.cloudflare.com/#waf-rules-edit-rule](https://api.cloudflare.com/#waf-rules-edit-rule)
 
-끝나셨으면 튜닝 준비가 완료되었습니다. 이제부터는 대시보드에서 로깅되는 WAF 룰을 확인해 가시면서 아래 기준으로 튜닝하시면 됩니다.
+Then you’re ready to start fine-tune. From now on please try to check which WAF rules are triggered, and fine-tune with below criteria;
 
-- 자주 트리거되는 룰: 탐지되는 개별 룰셋의 정탐 여부를 판단하여 `Block`(이나 `Challenge`)으로 변경 결정
-- 판단에 노이즈가 되는 룰: 공격으로 판단되지 않는데, 지속적으로 대시보드에 출현함 - `Disable`으로 변경 결정
+- Rules actively triggered: Determine if the individual rule triggers were legitimate. 
+  - If legitimate: Change the action to `Block` (or `Challenge`)
+  - Doesn't look legitimate, but somehow gives noise: Consider changing the action to `Disable`
 
 ## WAF Override (ENT Only)
 
