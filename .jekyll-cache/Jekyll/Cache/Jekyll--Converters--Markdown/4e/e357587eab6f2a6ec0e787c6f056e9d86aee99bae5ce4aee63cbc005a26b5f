@@ -1,4 +1,0 @@
-I",<p>Cloudflare raw logs is enterprise only.
-Enterprise customers should use <a href="https://developers.cloudflare.com/logs/logpull-api/enabling-log-retention/">this API</a> to enable Cloudflare log retention. That said, once this API is used, CF will start logging and it’s not on by default.</p>
-
-:ET

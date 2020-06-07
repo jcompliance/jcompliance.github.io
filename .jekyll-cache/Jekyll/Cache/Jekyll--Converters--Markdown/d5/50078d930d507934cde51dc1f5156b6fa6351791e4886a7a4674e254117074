@@ -1,8 +1,0 @@
-I"�<h1 id="jean-ryu">Jean Ryu</h1>
-
-<p>안녕하세요. 방문 감사드립니다. 저는 Jean이라고 합니다.
-강원도 춘천에서 나고 자라 서울에서 공부하였고, <a href="https://krnic.or.kr/">한국인터넷진흥원</a> DNS/IP주소 파트에서 5년여간 근무한 후 2017년부터는 싱가포르로 이주하여 <a href="https://www.cloudflare.com/ko-kr/">Cloudflare</a>라는 회사에서 Solutions Engineer로 일하고 있습니다.</p>
-
-<p>이 블로그는 이런저런 개인 프로젝트와 취미생활을 기록하기 위해 만든 공간으로, Github Page와 Jekyll, Cloudflare가 이용되었습니다. 블로그의 다국어 지원 기능은 <a href="https://www.sylvaindurand.org/making-jekyll-multilingual/">Sylvain Durand</a> 님의 프로젝트를 참고하여 플러그인 없이 구축되었고 <a href="/cloudflare/workers/2020/04/20/country-redirect-ko.html">Cloudflare Workers</a>를 이용하여 라우팅되고 있습니다.</p>
-
-:ET

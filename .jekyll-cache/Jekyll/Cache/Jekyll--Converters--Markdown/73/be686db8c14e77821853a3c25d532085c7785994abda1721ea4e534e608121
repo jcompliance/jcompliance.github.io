@@ -1,2 +1,0 @@
-I"Û<p>If you use Cloudflare Workers, you can run your small code snippet at the edge. In this example, I read country information from request headers and redirected requests to corresponding language page of my blog.</p>
-:ET

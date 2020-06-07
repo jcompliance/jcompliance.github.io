@@ -1,2 +1,0 @@
-I"y<p>얼마 전에 <a href="/cloudflare/botmanagement/2020/05/21/webinar-debunking-myths-ko.html">사이트에 있는 악성 봇을 판별하고 대처하는 법에 대해 웨비나를 진행했습니다.</a> 사실은 테스트/데모 용도로 이 개인 블로그에도 <a href="https://www.cloudflare.com/products/bot-management/">Cloudflare Bot Management</a> 제품을 적용해 놓았습니다. 블로그에 들어오는 리퀘스트의 botScore가 30 미만인 경우 제 Cloudflare Zone에 각각 보안 이벤트로 로깅될 것입니다. 30 이상인 경우에도 Logpush를 통해 정보를 로깅하고 있습니다.</p>
-:ET

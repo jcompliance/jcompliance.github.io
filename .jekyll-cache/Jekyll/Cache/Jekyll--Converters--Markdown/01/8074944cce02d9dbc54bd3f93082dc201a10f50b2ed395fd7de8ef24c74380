@@ -1,2 +1,0 @@
-I"�<p>2018년 12월 12일에 촬영한 한국어 웨비나입니다. Cloudflare는 적용이 빠르고 DDoS 방어에 효과적이라는 이점이 있어 소위 <code class="highlighter-rouge">Under Attack</code>이라고 불리는, DDoS 공격을 실시간으로 받고 있어 빠르게 방어책을 적용해야 하는 고객사를 많이 받는 편입니다. <a href="https://www.cloudflare.com/ko-kr/ddos/under-attack/">이 페이지</a>를 통해 많이 sign up 하십니다. 반면에 이미 Cloudflare를 사용하고 있어도, 오리진 서버를 전체공개 하셨다든지 필요한 설정이 정확하게 되어 있지 않으면 공격자에게 취약한 부분을 감지당해 Cloudflare를 적용하고도 공격을 받으시는 경우가 발생하기도 합니다. 이 웨비나는 어떤 Plan이든 Cloudflare를 사용하시는 고객께서 정확한 설정으로 DDoS 방어 효과를 잘 누리셨으면 해서 촬영했습니다.</p>
-:ET
