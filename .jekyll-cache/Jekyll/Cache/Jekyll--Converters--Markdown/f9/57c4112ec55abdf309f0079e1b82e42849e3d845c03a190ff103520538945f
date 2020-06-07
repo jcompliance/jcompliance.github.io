@@ -1,2 +1,0 @@
-I"&<p>Normally, you use Cloudflare Page Rules to do URL redirection or HTTP -&gt; HTTPS redirection. However, if you have too many number of rules you may encounter the number of rules limit. Below is a simple code snippet to match request protocol and url and handle redirection accordingly.</p>
-:ET

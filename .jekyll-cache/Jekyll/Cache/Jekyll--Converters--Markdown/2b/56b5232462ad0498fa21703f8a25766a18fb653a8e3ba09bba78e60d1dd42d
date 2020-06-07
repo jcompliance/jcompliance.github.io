@@ -1,2 +1,0 @@
-I"�<p>I have talked about <a href="/cloudflare/botmanagement/2020/05/21/webinar-debunking-myths-en.html">how to deal with malicious bots in your application at this webinar.</a> Since I’ve started to play with this blog I’m also testing <a href="https://www.cloudflare.com/products/bot-management/">Cloudflare Bot Management</a> for this site which will be logging (I haven’t deployed any action yet) requests under botScore of 30.</p>
-:ET
