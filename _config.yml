@@ -18,8 +18,8 @@ subtitle:
 email: jeann.tech@gmail.com
 description:
   index: Welcome to Jean's personal blog. I may intend to disseminate some technical knowledges but do cross-check with the official document for up-to-date information because I don't maintain this blog as my daily work.
-  en:  
-  ko:  
+  en: 
+  ko: 개인 블로그입니다. 적고 싶은 기술이야기를 적습니다만 업무의 일환으로 관리하지 않습니다.
   fr: Parce que je viens de commencer à apprendre le français, vous pouvez trouver des erreurs grammaticales dans mon écriture.
 index:
   en: en.html
