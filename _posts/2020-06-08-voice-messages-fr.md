@@ -29,10 +29,10 @@ lang: fr
 
 Nouvelle chose:
 
-- oublié: 잊어버리다
-- pour la séance de: ~시에 상영하는 
-- En face d'un café: 카페 맞은편에서
-- N'arrive pas en retard : 늦지 마.
+- oublié: forgotten
+- pour la séance de: for the sequence of (movie)
+- En face d'un café: at the opposite side of a cafe
+- N'arrive pas en retard : don't be late.
 
 
 > Salut, c'est Béatrice. J'ai bien reçu ton message et j'accepte ta proposition à propos du pique-nique à la campagne. Je vais passer chez toi demain à 11 h. On va faire des courses au supermarché avant de partir. Si tu as un problème, appelle-moi au 06 78 56 98 23.
@@ -59,10 +59,10 @@ Nouvelle chose:
 
 Nouvelle choses:
 
-- à propos du : ~에 관한
-- pique-nique: 피크닉
-- la campagne.: 교외
-- prévue: 예정된
-- se baigner: 해수욕
-- avant de 동사 원형: ~하기 전에
+- à propos du : aboutÙ
+- pique-nique: picnic
+- la campagne.: 교외/countryside
+- prévue: planned
+- se baigner: sea bathing
+- avant de 동사 원형: before doing --
 
