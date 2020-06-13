@@ -67,6 +67,8 @@ This mutual TLS (2-way-ssl) auth is commonly preferred in banking industry where
 - Even if you don't have TLS based client auth today but need one, it is easy-to-implement.
 - If you do have TLS based client auth today, you can use Cloudflare and enjoy its DDoS protection + Security + Performance benefit together with client auth capability.
 
+As of 2020-06-08, Cloudflare Mutual TLS is enterprise only. If you're a Cloudflare enterprise customer and need this, you may reach out to your sales representative. If you're a Cloudflare partner supports our enterprise customers then you may want to talk to your channel account manager.
+
 # References
 
 - Getting started with mTLS [https://developers.cloudflare.com/access/service-auth/mtls/](https://developers.cloudflare.com/access/service-auth/mtls/)
