@@ -32,7 +32,7 @@ Nouvelles choses:
 - La gare = train, voie
 - L'aéroport = vol, aérogare, porte,
 - L'arrêt du bus 
-- sont invités à: is invited to. ~로 가시기 바랍니다
+- sont invités à: is invited to. 
 - se rapprocher de la porte
 
 # À la gare
@@ -68,7 +68,7 @@ Quel est le numéro de la ligne de mêtro ?
 
 Pourquoi le trafic est-il interrompu ? _À cause d'un problème d'électricité._
 
-- la ligne : line. 지하철 얘기할때 단골 단어라고 함.
+- la ligne : line. 
 - interrompu : suspension
 
 # Une promotion dans un magasin
