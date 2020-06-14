@@ -114,7 +114,7 @@ query {
 
 **Bot Management가 활성화된 Zone에만 적용됩니다.**
 
-[Q: 이 필드 어디에 쓰는데요? A: 여기를 읽어 보세요](/cloudflare/botmanagement/2020/05/31/are-you-a-bot-kr.html)
+[Q: 이 필드 어디에 쓰는데요? A: 여기를 읽어 보세요](/cloudflare/botmanagement/2020/05/31/are-you-a-bot-ko.html)
 
 ## 각각 보안 제품과 액션에 대한 응답 코드 분석
 

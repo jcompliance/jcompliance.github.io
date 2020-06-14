@@ -59,7 +59,7 @@ Nouvelle chose:
 
 Nouvelle choses:
 
-- à propos du : aboutÙ
+- à propos du : about~
 - pique-nique: picnic
 - la campagne.: 교외/countryside
 - prévue: planned
