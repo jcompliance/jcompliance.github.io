@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Selling Cloudflare - Technical Overview (국문)"
+title:  "Cloudflare 기술 세일즈 기본 과정"
 ref:  20200615a
 date:   2020-06-15 15:00:00 +0800
 categories: cloudflare overview
