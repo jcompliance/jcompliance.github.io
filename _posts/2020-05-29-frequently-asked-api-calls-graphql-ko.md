@@ -24,6 +24,7 @@ BETA 플래그가 붙은 기능들은 공식 제품/기능의 일부가 아님�
 Cloudflare GraphQL Endpoint: `https://api.cloudflare.com/client/v4/graphql`
 
 # 목차
+{:.no_toc}
 
 * TOC
 {:toc}
@@ -349,3 +350,40 @@ query {
 {% endhighlight %}
 
 `clientIP`를 `userAgent`로 바꾸시면 userAgent 정보를 질의하실 수 있습니다.
+
+# Zone Analytics
+
+Zone Analytics란 대시보드의 Analytics - Traffic 메뉴에 노출되는 트래픽 개요 정보입니다. httpRequest1xGroups (httpRequest1mGroups, httpRequest1hGroups, httpRequest1dGroups) 데이터셋을 이용하셔서 Zone Analytics 관련 정보를 확인하실 수 있습니다.
+
+## 한 달 동안 들어온 리퀘스트의 https 이용 여부 파악
+
+서비스 도메인에 들어온 전체 리퀘스트 갯수의 http/https 여부를 정리해서 확인하시고 싶으시면, Zone Analytics 데이터의 데일리 롤업 버전인 `httpRequest1dGroups` 데이터셋을 이용하시면 됩니다.
+
+**Query:**
+{% highlight ruby %}
+query {
+  viewer{
+    zones(filter: { zoneTag: $zoneid}) {
+      httpRequests1dGroups (limit:10, filter: $filter, orderBy: [sum_requests_DESC])
+      {
+        sum
+        {
+          requests
+          encryptedRequests
+        }
+      } 
+    }
+  }
+}
+{% endhighlight %}
+
+**Query Variables:**
+{% highlight ruby %}
+{
+  "zoneid" : "<$zone_id>",
+  "filter": {
+    "date_geq" : "2020-05-01",
+    "date_leq" : "2020-05-31"
+  }
+}
+{% endhighlight %}

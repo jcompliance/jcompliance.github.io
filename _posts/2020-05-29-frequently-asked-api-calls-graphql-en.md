@@ -24,6 +24,7 @@ I use GraphiQL as my client program, [same as the official documentation](https:
 Cloudflare GraphQL Endpoint: `https://api.cloudflare.com/client/v4/graphql`
 
 # Table of Contents
+{:.no_toc}
 
 * TOC
 {:toc}
@@ -297,7 +298,7 @@ query {
   }
 {% endhighlight %}
 
-##  Top 20 clientIP, top 20 userAgents in specific timeframe
+## Top 20 clientIP, top 20 userAgents in specific timeframe
 
 If you would like to see top 20 clientIP or userAgent etc, in specific timeframe, you can leverage Cache Analytics dataset with few caveats apply.
 
@@ -335,3 +336,40 @@ query {
 {% endhighlight %}
 
 To query userAgent information, please replace `clientIP` to `userAgent` in the query.
+
+# Zone Analytics
+
+Zone Analytics is a traffic overview information which you can find in the Analytics - Traffic app from Cloudflare dashboard. You can query to httpRequest1xGroups (httpRequest1mGroups, httpRequest1hGroups, httpRequest1dGroups) to retrieve information about Zone Analytics.
+
+## Number of requests breakdown by http(s) for a month
+
+If you want to count number of http requests in comparison to https requests made to your domain, you can leverage daily rollup data of the Zone Analytics dataset, which is `httpRequest1dGroups`.
+
+**Query:**
+{% highlight ruby %}
+query {
+  viewer{
+    zones(filter: { zoneTag: $zoneid}) {
+      httpRequests1dGroups (limit:10, filter: $filter, orderBy: [sum_requests_DESC])
+      {
+        sum
+        {
+          requests
+          encryptedRequests
+        }
+      } 
+    }
+  }
+}
+{% endhighlight %}
+
+**Query Variables:**
+{% highlight ruby %}
+{
+  "zoneid" : "<$zone_id>",
+  "filter": {
+    "date_geq" : "2020-05-01",
+    "date_leq" : "2020-05-31"
+  }
+}
+{% endhighlight %}
