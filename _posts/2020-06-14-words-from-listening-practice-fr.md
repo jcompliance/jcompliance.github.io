@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "L'examen Lundi Prochain!"
+title:  "L'examen Lundi Prochain !"
 ref:  20200614a
 date:   2020-06-14 20:40:00 +0800
 categories: study language

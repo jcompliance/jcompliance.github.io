@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Une lettre à une amie: emménager"
+title:  "Une Lettre à une Amie: Emménager"
 ref:  20200425
 date:   2020-04-25 09:00:00 +0800
 categories: study language
-tags: language francais delfa1
+tags: language francais delfa1 writing
 lang: fr
 ---
 
