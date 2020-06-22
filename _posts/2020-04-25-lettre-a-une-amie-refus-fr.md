@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Une lettre à une amie: réponse"
+title:  "Une Lettre à une Amie: Réponse"
 ref:  20200425a
 date:   2020-04-25 10:00:00 +0800
 categories: study language
-tags: language francais delfa1
+tags: language francais delfa1 writing
 lang: fr
 ---
 

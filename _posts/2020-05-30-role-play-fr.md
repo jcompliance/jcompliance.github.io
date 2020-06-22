@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Jeu de Rôle"
+title:  "Jeux de Rôle"
 ref:  20200530b
 date:   2020-05-30 23:00:00 +0800
 categories: study language
-tags: language francais delfa1
+tags: language francais delfa1 speaking
 lang: fr
 ---
 

@@ -4,7 +4,7 @@ title:  "Messages Vocaux"
 ref:  20200608a
 date:   2020-06-08 20:50:00 +0800
 categories: study language
-tags: language francais delfa1 writing
+tags: language francais delfa1 listening
 lang: fr
 ---
 

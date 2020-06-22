@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "L'annonces"
+title:  "Les Annonces"
 ref:  20200606a
 date:   2020-06-06 22:00:00 +0800
 categories: study language
-tags: language francais delfa1
+tags: language francais delfa1 listening
 lang: fr
 ---
 

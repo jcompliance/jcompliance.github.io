@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Entretien dirigé"
+title:  "Entretien Dirigé"
 ref:  e
 date:   2020-04-21 01:00:00 +0800
 categories: study language
-tags: language francais delfa1
+tags: language francais delfa1 speaking
 lang: fr
 ---
 
