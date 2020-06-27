@@ -41,9 +41,9 @@ Cloudflare 파트너 세일즈 엔지니어분들의 교육을 위한 영상자�
    - Image Resizing
 - 주로 참고하실 리소스 `// part 4`
 
+<!--
 2시간이 훌쩍 넘는 비디오라 쉬는 시간 없이 한 번에 달리시면 자장가가 될까 염려되어 (시원스쿨의 스킬을 참고하여) 30분정도씩 잘랐습니다. 구현/설정까지는 다루지 않지만 Cloudflare 세일즈를 시작하실 때 필요한 기본 지식을 최대한 다 설명드린다는 생각으로 촬영했습니다. 비디오와 자료는 파트너사에만 배포가 가능하기에, Cloudflare 리셀러/Tier-1 파트너께서는 발급받으신 계정으로 파트너 포털에 접속하셔서 학습하실 수 있습니다.
 
-<!--
 파트너사 엔지니어분들께서는 해당 모듈을 학습하시고, [Cloudflare Accredited Sales Engineer 시험에 응시해 보세요](https://blog.cloudflare.com/empowering-our-customers-and-service-partners/). 합격하시면 다소 기분이 좋아지는 인증서와 부상이 주어집니다. 저희 회사도 언젠가는 시스코처럼 풍요로운 자격증 비즈니스(?)가 생겼으면 하는 꿈을 제가 개인적으로 늘 꾸고 있답니다. 아직 프로그램 초창기라 따기 어렵지 않으니, 사냥하세요!
 
 !["ASE" 티셔츠를 입고 있으면... 남편이 얼마나 놀리는지 모릅니다](https://blog-cloudflare-com-assets.storage.googleapis.com/2020/04/image-2.png)
@@ -82,8 +82,6 @@ Cloudflare 코어 제품 중 Security, Performance, Platform, Insight 부분을 
 <script data-cfasync="false" defer type="text/javascript" src="https://embed.videodelivery.net/embed/r4xu.fla9.latest.js?video=892c0d8a88e7913e27277cc7828b8247"></script>
 
 Cloudflare 구현 과정을 하이 레벨로 짚어보고, POC 제안 시 주의 사항을 알아보고 여러가지 Add-on 솔루션을 빠르게 다룹니다. (29분) 
-
-도움이 되셨는지요?
 
 이번 코스워크의 목적은 파트너사 엔지니어분들이 직접 고객사에 Cloudflare 솔루션을 소개하시고, 고객사의 요구사항에 따라 솔루션을 디자인하시고 high level로 scoping 하실 수 있게 되는 것입니다. 
 
