@@ -3,6 +3,7 @@ layout: page
 title: 소개
 ref: about
 lang: ko
+order: 3
 ---
 
 # Jean Ryu

@@ -37,12 +37,6 @@ feed:
   en: /feed.xml
   ko: /feed-ko.xml
   fr: /feed-fr.xml
-order:
-  en: 1
-  ko: 2
-  fr: 3
-  ja: 4
-  zh: 5
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://blog.jeann.net" # the base hostname & protocol for your site
 linkedin_username: jeannryu
