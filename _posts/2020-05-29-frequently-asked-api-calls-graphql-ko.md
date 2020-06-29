@@ -214,12 +214,46 @@ query {
   }
 {% endhighlight %}
 
+## 트리거된 WAF 룰 확인 (15개 이상)
 
-# Cache Analytics (BETA)
+작성일인 2020-06-29 기준, Firewall Events 대시보드를 활용하면 트리거된 WAF 룰을 검색시간 기준 15개까지 확인할 수 있습니다. 15개 이상의 정보를 확인하려면 API를 활용하셔야 합니다. 대시보드를 이용해서 검색 시간대를 줄여서 확인하는 방법도 있지만 24시간, 48시간 등, 취약점 스캐닝을 했던 특정 시간대에 동작한 모든 WAF 룰을 확인하려면 GraphQL Analytics API가 가장 좋은 방법입니다. 이 쿼리의 필터나 dimension 부분을 바꾸셔서 clientIP나 userAgent 등의 다른 정보를 확인할 수도 있습니다.
 
-2020년 5월 29일 기준: 
-- 최대 쿼리 가능 기간: 최근 31일 (2,678,400초)
-- Adaptive Bitrate 샘플링을 이용합니다. (최대 1%)
+**Query:**
+{% highlight ruby %}
+query {
+  viewer{
+    zones(filter: { zoneTag: $zone_id}) {
+      firewallEventsAdaptiveGroups (limit:100, filter: $filter, orderBy: [count_DESC])
+      {
+        count
+        dimensions{
+          ruleId
+          action
+        }
+      }
+     }
+  }
+}
+{% endhighlight %}
+
+**Query Variables:**
+{% highlight ruby %}
+  {
+    "zone_id" : "<$zone_id>",
+    "filter": {
+      "datetime_geq" : "<$datetime_geq>",
+      "datetime_leq" : "<$datetime_leq>",
+      "source": "waf"
+    }
+  }
+{% endhighlight %}
+
+
+# Cache Analytics 
+
+2020년 6월 29일 기준: 
+- 최대 쿼리 가능 기간: 최근 22일 (1,900,800초)
+- Adaptive Bitrate 샘플링을 이용합니다. (최대 10%)
 
 ## 특정 리퀘스트의 디테일한 분석 
 
