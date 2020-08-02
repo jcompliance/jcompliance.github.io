@@ -201,12 +201,45 @@ Most of the query result should contain `"action": "allow"`. Most of the result 
 
 If you don't see anything from the result, that's not good either as it means you aren't getting googlebot requests. (a) check if you created firewall rules correctly, and (b) check if you correctly registered your website at your Google Search Console.
 
+## Retrieve Triggered WAF Rules (More than 15 items)
 
-# Cache Analytics (BETA)
+At Firewall Events dashboard you can get lists of WAF rules triggered up to 15 items (as of today 2020-06-29), but not more than that. You can of course try to narrow time window but occasionally, you just want to have full list of triggered WAF ruleIds and their actions, e.g. up to 100. GraphQL Analytics API can help you to retrieve that. You can feel free to change the filter to retrieve another items like clientIPs, userAgents, etc.
 
-As of 29 May:
-- Queryable Duration: Last 31 Days (2,678,400s)
-- Sampled in Adaptive Bitrate (Up to 1%)
+**Query:**
+{% highlight ruby %}
+query {
+  viewer{
+    zones(filter: { zoneTag: $zone_id}) {
+      firewallEventsAdaptiveGroups (limit:100, filter: $filter, orderBy: [count_DESC])
+      {
+        count
+        dimensions{
+          ruleId
+          action
+        }
+      }
+     }
+  }
+}
+{% endhighlight %}
+
+**Query Variables:**
+{% highlight ruby %}
+  {
+    "zone_id" : "<$zone_id>",
+    "filter": {
+      "datetime_geq" : "<$datetime_geq>",
+      "datetime_leq" : "<$datetime_leq>",
+      "source": "waf"
+    }
+  }
+{% endhighlight %}
+
+# Cache Analytics
+
+As of 2020-06-29:
+- Queryable Duration: Last 22 Days (1,900,800s)
+- Sampled in Adaptive Bitrate (Up to 10%)
 
 ## Analyse a request in detail
 
