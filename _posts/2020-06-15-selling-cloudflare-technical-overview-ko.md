@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Cloudflare 기술 세일즈 기본 과정 (Temporarily Protected)"
+title:  "Cloudflare 기술 세일즈 기본 과정"
 ref:  20200615a
 date:   2020-06-15 15:00:00 +0800
 categories: cloudflare overview
@@ -8,7 +8,7 @@ tags: cloudflare overview partner performance security
 lang: ko
 ---
 
-Cloudflare 파트너 세일즈 엔지니어분들의 교육을 위한 영상자료를 촬영했습니다. 'Selling Cloudflare - Technical Overview' 라는 주제입니다. 2시간 분량으로 아래 내용을 국문으로 설명하는 비디오입니다. 
+Cloudflare 파트너 세일즈 엔지니어분들의 교육을 위한 영상자료를 촬영했습니다. 'Selling Cloudflare - Technical Overview' 라는 주제입니다. 2시간 분량으로 아래 내용을 국문으로 설명하는 비디오입니다. 파트너사 전용으로 포털을 통해 배포됩니다.
 
 - Cloudflare와의 파트너십의 이점
 - Cloudflare의 하이 레벨 기술 구조 `// part 1`
@@ -55,6 +55,7 @@ Cloudflare 파트너 세일즈 엔지니어분들의 교육을 위한 영상자�
 
 이곳은 공식 포털이 아닙니다만, 파트너 포털에 교육자료 업로드 내부 승인을 받는 데에 시간이 걸리고 있어, 당장 영상이 필요하신 파트너 엔지니어분들을 지원해 드리기 위해 임시적으로 블로그에 영상을 업로드합니다. 파트너 포털에 영상이 준비되고 나면 블로그에서는 내려갑니다. 학습에 도움이 되시길 바랍니다.
 
+<!--
 ## Part 1
 
 <stream src="642b534cb3fef1aeb9defec30cf74bb8" controls preload></stream>
@@ -83,6 +84,7 @@ Cloudflare 코어 제품 중 Security, Performance, Platform, Insight 부분을 
 
 Cloudflare 구현 과정을 하이 레벨로 짚어보고, POC 제안 시 주의 사항을 알아보고 여러가지 Add-on 솔루션을 빠르게 다룹니다. (29분) 
 
+
 이번 코스워크의 목적은 파트너사 엔지니어분들이 직접 고객사에 Cloudflare 솔루션을 소개하시고, 고객사의 요구사항에 따라 솔루션을 디자인하시고 high level로 scoping 하실 수 있게 되는 것입니다. 
 
 이 과정을 학습하신 후 Partner Demo Account를 발급받으셔서 실제 솔루션을 hands-on 테스트해보시는 게 좋습니다. 직접 동작을 테스트해보시고, 고객사에 Dashboard Demo를 직접 하실 수 있게 되시면 그 후에는 실제 고객사의 POC 지원 & implementation 과정을 학습하실 수 있게 됩니다. Tier-1 파트너분들께서는 최종적으로 troubleshooting 까지 익히셔서, Cloudflare SE의 지원 없이도 직접 Tier-1으로 담당 고객사의 기술지원을 하실 수 있도록 될 것입니다.
@@ -94,5 +96,28 @@ Cloudflare 구현 과정을 하이 레벨로 짚어보고, POC 제안 시 주의
 - [Cloudflare 테스트 시작하기(공식/영문)](https://support.cloudflare.com/hc/en-us/articles/360037345072-Getting-Started-with-Cloudflare-Video-Tutorials)
 
 해당 모듈을 학습하시고 나면 [Cloudflare Accredited Sales Engineer 시험에 응시하실 수 있습니다](https://blog.cloudflare.com/empowering-our-customers-and-service-partners/). 담당 Channel Account Manager 분께 문의하시기 바랍니다.
+
+!["ASE" 티셔츠를 입고 있으면... 남편이 얼마나 놀리는지 모릅니다](https://blog-cloudflare-com-assets.storage.googleapis.com/2020/04/image-2.png)
+
+-->
+
+# 2020-08-17 Update
+
+드디어 파트너 포털에 국문 영상이 업로드 완료되어 블로그에서 비디오를 내렸습니다. Cloudflare 파트너 포털에 접속하셔서 해당 코스워크를 학습하시기 바랍니다. 
+
+4개로 나누어 촬영한 트레이닝 비디오의 각각 파트는 아래 내용을 다루고 있습니다. 1개의 코스워크입니다만 집중력 저하를 우려하여 30분 정도씩 잘랐습니다.
+
+- Part 1 : Cloudflare와의 파트너십의 이점 / 솔루션의 이점 / 기술구조의 개요를 다룹니다. (21분)
+- Part 2 : Cloudflare 솔루션을 하이 레벨로 짚어보고, 코어 제품 중 DNS와 SSL을 설명합니다. (31분)
+- Part 3 : Cloudflare 코어 제품 중 Security, Performance, Platform, Insight 부분을 짚어봅니다. (32분)
+- Part 4 : Cloudflare 구현 과정을 하이 레벨로 짚어보고, POC 제안 시 주의 사항을 알아보고 여러가지 Add-on 솔루션을 빠르게 다룹니다. (29분) 
+
+파트너사 세일즈 엔지니어분께서 4개 트레이닝 비디오의 시청이 끝나셨으면 실제 Cloudflare 구현을 테스트해보시기 바랍니다. 아래 리소스를 참고하실 수 있습니다.
+
+- [Full Setup 설명 영상(국문)](/cloudflare/onboarding/2020/04/20/hello-world-ko.html)
+- [CNAME Setup 설명 영상(국문)](https://youtu.be/PEVbptIL38U)
+- [Cloudflare 테스트 시작하기(공식/영문)](https://support.cloudflare.com/hc/en-us/articles/360037345072-Getting-Started-with-Cloudflare-Video-Tutorials)
+
+해당 모듈의 학습과 테스트가 끝나셨으면 아래 Certification 중 Cloudflare ASP(Accredited Sales Professional) 과 Cloudflare ASE(Accredited Sales Engineer) 시험에 응시하실 수 있습니다. 파트너 포털에서 시험에 도전하시기 바랍니다.
 
 !["ASE" 티셔츠를 입고 있으면... 남편이 얼마나 놀리는지 모릅니다](https://blog-cloudflare-com-assets.storage.googleapis.com/2020/04/image-2.png)
