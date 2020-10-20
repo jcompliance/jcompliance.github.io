@@ -14,4 +14,6 @@ lang: ko
 
 <div style="position: relative; padding-top: 56.34674922600619%;"><iframe src="https://iframe.videodelivery.net/bbc793605a9582e36b17e7672220c2a7?preload=true" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;"  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
 
-참석해주신 여러분들 모두 감사합니다! [더 도움이 되는 과정으로 만들기 위해 피드백 주시면 큰 도움이 됩니다.](https://forms.gle/DWCKisJKnJrrHY8ZA) 내용을 잊어버리기 전에 [Cloudflare 파트너 포털의 Training - Accreditation 메뉴를 통해](https://portal.cloudflarepartners.com/) 꼭 ASE 인증을 취득하시기 바랍니다. 
+참석해주신 여러분들 모두 감사합니다! [더 도움이 되는 과정으로 만들기 위해 피드백 주시면 큰 도움이 됩니다.](https://forms.gle/DWCKisJKnJrrHY8ZA) 
+
+내용을 잊어버리시기 전에 [Cloudflare 파트너 포털의 Training - Cloudflare University - "Cloudflare Accreditations" 메뉴를 통해](https://portal.cloudflarepartners.com/) 꼭 ASE 인증을 취득하시기 바랍니다!
