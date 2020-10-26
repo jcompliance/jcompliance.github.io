@@ -18,7 +18,9 @@ lang: ko
 
 3개 주제 중에 Implementation과 Optimization을 다루었습니다.
 
-<div style="position: relative; padding-top: 62.5%;"><iframe src="https://iframe.videodelivery.net/71107798f740dc2d65849e66ae8f3e3a?preload=true" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;"  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
+
+<div style="position: relative; padding-top: 62.5%;"><iframe src="https://watch.cloudflarestream.com/71107798f740dc2d65849e66ae8f3e3a?controls=false" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;"  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe></div>
+
 
 0:00:00 부터 4:07:00 까지는 Implementation 과정입니다. 실습과 함께 진행되었습니다.
 
