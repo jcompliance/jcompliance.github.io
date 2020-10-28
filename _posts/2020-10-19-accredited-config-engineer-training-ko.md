@@ -26,3 +26,10 @@ lang: ko
 0:00:00 부터 4:07:00 까지는 Implementation 과정입니다. 실습과 함께 진행되었습니다.
 
 4:07:00 정도부터 마지막까지는 Optimization 과정에 대해 다룹니다.
+
+
+<stream src="0eb11c191387cf9c9c6bb33b5234c1cd" controls preload></stream>
+<script data-cfasync="false" defer type="text/javascript" src="https://embed.videodelivery.net/embed/r4xu.fla9.latest.js?video=0eb11c191387cf9c9c6bb33b5234c1cd"></script>
+
+
+두 번째 비디오는 10월 28일에 보충 진행한 Troubleshooting 과정입니다.
