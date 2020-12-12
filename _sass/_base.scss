@@ -126,6 +126,7 @@ blockquote {
 /**
  * Code formatting
  */
+
 pre,
 code {
     font-size: 15px;
@@ -140,10 +141,17 @@ code {
     white-space: pre-wrap;
 }
 
+nowrap {
+    border: 0;
+    padding-right: 0;
+    padding-left: 0;
+    white-space: pre;
+}
+
 pre {
     padding: 8px 12px;
     overflow-x: auto;
-    white-space: pre-wrap;
+//    white-space: pre-wrap;
 
     > code {
         border: 0;
@@ -151,8 +159,8 @@ pre {
         padding-left: 0;
         white-space: pre-wrap;
     }
-}
 
+}
 
 
 /**
