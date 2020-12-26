@@ -10,4 +10,4 @@ lang: fr
 
 Je vais écrire quelque chose pour 100 jours.
 
-J'espère je n'utiliserai pas de Google Translate. Mais ce n'est pas toujour possible.
+J'espère je n'utiliserai pas de Google Translate. Mais ce n'est pas toujours possible.
