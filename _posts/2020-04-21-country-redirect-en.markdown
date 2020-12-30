@@ -35,14 +35,14 @@ async function fetchAndApply(request) {
     )}
 
   else {
-      return fetch(request.url, request)
+      return fetch(request)
   }
 }
 {% endhighlight %}
 
 This code reads client country (Cloudflare uses Maxmind for this as of 2020.) and edge data center(colo). If incoming requests are from South Korea, they will be redirected to `/kr.html`. if the requests are from France or they hit Cloudflare's France colo `CDG`, they'll be redirected to `/fr.html`. Other requests are directed to root path.
 
-This snippet is basic form of conditional redirection but is widely used because without having to have visitors to choose the language they can localize the business under the same FQDN. Here, instead of using client country information, reading `accept-language` to determine preferred locale can be considered as well.
+This snippet is basic form of conditional redirection but is widely used because without having to have visitors to choose the language they can localize the business under the same FQDN. Here, instead of using client country information, reading `accept-language` to determine preferred locale can be considered as well. [You could refer to this post for the snippet.](https://blog.jeann.net/cloudflare/workers/2020/12/30/serve-lang-pages-with-workers.html)
 
 This is my personal template. You can feel free to re-use under your responsibility but please note Cloudflare Solutions Engineers do not:
 
