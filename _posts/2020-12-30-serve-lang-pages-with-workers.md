@@ -8,7 +8,7 @@ tags: workers cloudflare redirection
 lang: en
 ---
 
-[Other than country-based language page redirection,](https://stg.blog.jeann.net/cloudflare/workers/2020/04/20/country-redirect-en.html) you may want to read `accept-language` header from the request headers instead. It'll give better information of individuals - if a person connecting from Korea actually prefers English or French, you would want to serve his or her language instead of Korean. This header will reflect the information.
+[Other than country-based language page redirection,](https://blog.jeann.net/cloudflare/workers/2020/04/20/country-redirect-en.html) you may want to read `accept-language` header from the request headers instead. It'll give better information of individuals - if a person connecting from Korea actually prefers English or French, you would want to serve his or her language instead of Korean. This header will reflect the information.
 
 {% highlight ruby %}
 addEventListener('fetch', event => {

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Cloudflare Workers로 캐싱 커스텀 제어하기" #"Control Caching with Cloudflare Workers"
+title:  "Cloudflare Workers로 캐싱 커스텀 제어하기" 
 ref:  20201229a
 date:   2020-12-29 12:00:00 +0800
 categories: cloudflare workers
