@@ -3,7 +3,7 @@ layout: post
 title:  "Bulk Migrate to Cloudflare DNS"
 ref:  20200725a
 date:   2020-07-25 18:00:00 +0800
-categories: cloudflare onboarding
+categories: cloudflare api onboarding
 tags: cloudflare api
 lang: en
 ---
