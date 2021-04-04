@@ -9,41 +9,23 @@
 title:
   index: jCompliance
   en: jCompliance
-  ko: jCompliance
   fr: jCompliance
-  zh: jCompliance
-  ja: jCompliance
 subtitle:
   en: jcompliance.github.io
-  ko: jcompliance.github.io
   fr: jcompliance.github.io
-  zh: jcompliance.github.io
-  ja: jcompliance.github.io
 email: jerome.jsearch@gmail.com
 description:
   index: description comes here
   en: description comes here
-  ko: description comes here
   fr: description comes here
-  zh: description comes here
-  ja: description comes here
 index:
   en: en.html
-  ko: ko.html
   fr: fr.html
-  zh: zh.html
-  ja: ja.html
 feed:
   en: /feed.xml
-  ko: /feed-ko.xml
   fr: /feed-fr.xml
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://blog.jeann.net" # the base hostname & protocol for your site
-linkedin_username: jeannryu
-github_username: jeannryu
-instagram_username: jeannryu
-youtube_username: UCGdBK4vq7JSDxVzCS2lg3Vg
-facebook_username: ed2fd709
+url: "https://jcomliance.github.io" # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
