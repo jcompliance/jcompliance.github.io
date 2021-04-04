@@ -27,6 +27,7 @@ feed:
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://jcomliance.github.io" # the base hostname & protocol for your site
 linkedin_username: jerome-stoessel
+github_username: jcompliance
 
 # Build settings
 markdown: kramdown
