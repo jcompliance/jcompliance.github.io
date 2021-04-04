@@ -12,7 +12,7 @@ Pour ajouter un autre article, créez un nouveau fichier dans le dossier `_posts
 
 Jekyll permet aussi d'intégrer des extraits de code :
 
-{% highlight ruby %}
+{% highlight javascript %}
 def print_hi(name)
   puts "Bonjour, #{name}"
 end
@@ -22,6 +22,6 @@ print_hi('Tom')
 
 Jetez un coup d'oeil à la [documentation de Jekyll][jekyll-docs] pour en savoir plus sur ce qu'il vous est possible de faire avec Jekyll. Tous les bugs et demandes de fonctionnalités doivent être envoyés sous forme de requête sur [GitHub][jekyll-gh]. Si vous avez des questions, allez les poser sur le [fil d'aide de Jekyll][jekyll-talk].
 
-[jekyll-docs]: http://jekyllrb.com/docs/home
+[jekyll-docs]: https://gist.github.com/roachhd/779fa77e9b90fe945b0c
 [jekyll-gh]:   https://github.com/jekyll/jekyll
 [jekyll-talk]: https://talk.jekyllrb.com/
