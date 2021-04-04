@@ -7,26 +7,26 @@
 
 # Site settings
 title:
-  index: Jean Ryu
-  en: blog.jeann.net
-  ko: blog.jeann.net
-  fr: blog.jeann.net
-  zh: blog.jeann.net
-  ja: blog.jeann.net
+  index: jCompliance
+  en: jCompliance
+  ko: jCompliance
+  fr: jCompliance
+  zh: jCompliance
+  ja: jCompliance
 subtitle:
-  en: jeannryu.github.io
-  ko: jeannryu.github.io
-  fr: jeannryu.github.io
-  zh: jeannryu.github.io
-  ja: jeannryu.github.io
-email: jeann.tech@gmail.com
+  en: jcompliance.github.io
+  ko: jcompliance.github.io
+  fr: jcompliance.github.io
+  zh: jcompliance.github.io
+  ja: jcompliance.github.io
+email: jerome.jsearch@gmail.com
 description:
-  index: Welcome to Jean's personal blog. I may intend to disseminate some technical knowledges but do cross-check with the official document for up-to-date information because I don't maintain this blog as my daily work.
-  en: 
-  ko: 개인 블로그입니다. 적고 싶은 기술이야기를 적습니다만 업무의 일환으로 관리하지 않습니다.
-  fr: Parce que je viens de commencer à apprendre le français, vous pouvez trouver des erreurs grammaticales dans mon écriture.
-  zh: 我这儿练习我的中文。 
-  ja: 日本語の勉強のためのブログです。
+  index: description comes here
+  en: description comes here
+  ko: description comes here
+  fr: description comes here
+  zh: description comes here
+  ja: description comes here
 index:
   en: en.html
   ko: ko.html
