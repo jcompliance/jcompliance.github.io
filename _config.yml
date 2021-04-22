@@ -7,17 +7,18 @@
 
 # Site settings
 title:
-  index: jCompliance
-  en: jCompliance
-  fr: jCompliance
+  index: Audit & Compliance
+  en: Audit & Compliance
+  fr: Audit & Conformité
 subtitle:
+  index: jcompliance.github.io
   en: jcompliance.github.io
   fr: jcompliance.github.io
-email: jerome.jsearch@gmail.com
+email: 
 description:
-  index: description comes here
-  en: description comes here
-  fr: description comes here
+  index: Methodology & Guidance (english)
+  en: Methodology & Guidance (english)
+  fr: Méthodologie et conseils (french)
 index:
   en: en.html
   fr: fr.html

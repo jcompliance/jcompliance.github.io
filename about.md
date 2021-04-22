@@ -6,7 +6,3 @@ ref: about
 lang: en
 order: 1
 ---
-
-# About
-
-Introduction page

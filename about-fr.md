@@ -6,6 +6,5 @@ lang: fr
 order: 2
 ---
 
-# About
 
-Introduction page
+
