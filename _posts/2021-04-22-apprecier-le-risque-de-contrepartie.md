@@ -1,6 +1,6 @@
 ---
 layout: post # do not change
-title:  "Apprécier le risque de contrepartie" # post title
+title:  "Evaluer le risque de contrepartie" # post title
 ref: chilichili # if you want to make multilingual version of a post, you will use a same "reference".
 date:   2021-04-21 14:10:00 +0800 # datetime and the timezone.
 categories: Audit du marché des PME et Grandes Entreprises # with the filename, this consists a url.
