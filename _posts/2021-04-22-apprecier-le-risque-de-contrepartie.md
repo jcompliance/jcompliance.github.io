@@ -1,9 +1,9 @@
 ---
 layout: post # do not change
-title:  "Evaluer le risque de contrepartie" # post title
-ref: chilichili # if you want to make multilingual version of a post, you will use a same "reference".
+title:  "Evaluer le risque de contrepartie - Audit du marché des Moyennes et Grandes Entreprises" # post title
+ref: chilichili2 # if you want to make multilingual version of a post, you will use a same "reference".
 date:   2021-04-21 14:10:00 +0800 # datetime and the timezone.
-categories: Audit du marché des PME et Grandes Entreprises # with the filename, this consists a url.
+categories: Audit du marché des Moyennes et Grandes Entreprises # with the filename, this consists a url.
 lang: fr # use en or fr.
 ---
 
@@ -46,9 +46,9 @@ La société C apparaît comme la pièce centrale de ce dispositif, tant par le 
 
 ###### *Quels documents et pour quel usage*
 
-L’analyse financière d’une entreprise, pour se faire nécessite, la présence des états financiers pour les 3 derniers exercices, composés du bilan, du compte de résultats et de leurs annexes.
-La présence des comptes annuels certifiés par le commissaire aux comptes, lorsque l’entreprise y est soumise[^bignote1], est également primordiale. Le commissaire aux comptes garantit, dans ce dernier, la sincérité et la conformité des données financières de l'entreprise mais y fait également état des événements ou circonstances identifiés susceptibles de mettre en cause la continuité d'exploitation. Ainsi la présence de toute information adverse aura un impact prépondérant dans l’appréciation du risque par l’auditeur.
-D’autre part, dans son analyse l’auditeur ne doit pas se limiter à identifier et comprendre les évolutions et tendances sur les postes les plus significatifs, mais également s’assurer de la cohérence de ces derniers en comparant les états financiers à ceux d’autres entreprises aux caractéristiques équivalentes (taille, marché). Cette approche permet ainsi d’identifier les éventuels avantages/désavantages concurrentiels et orienter le questionnement de l’auditeur.
+L’analyse financière d’une entreprise, pour se faire nécessite, la présence des **états financiers** pour les 3 derniers exercices, composés du bilan, du compte de résultats et de leurs annexes.
+La présence des **comptes annuels certifiés par le commissaire aux comptes**, lorsque l’entreprise y est soumise[^bignote1], est également primordiale. Le commissaire aux comptes garantit, dans ce dernier, la sincérité et la conformité des données financières de l'entreprise mais y fait également état des événements ou circonstances identifiés susceptibles de mettre en cause la continuité d'exploitation. Ainsi la présence de toute information adverse aura un impact prépondérant dans l’appréciation du risque par l’auditeur.
+D’autre part, dans son analyse l’auditeur ne doit pas se limiter à identifier et comprendre les évolutions et tendances sur les postes les plus significatifs, mais également s’assurer de la cohérence de ces derniers en comparant les **états financiers** à ceux **d’autres entreprises aux caractéristiques équivalentes** (taille, marché). Cette approche permet ainsi d’identifier les éventuels avantages/désavantages concurrentiels et orienter le questionnement de l’auditeur.
 Il est également important de noter que les relations intragroupe peuvent être de nature à fausser la lecture des états financiers des entités qui composent le groupe. La lecture des comptes consolidés, lorsque ces derniers sont disponibles[^bignote2], apportera la solution à ce problème. A défaut, l'analyse du détail du poste clients pourrait constituer un élément palliatif.
   
   <p>&nbsp;</p>  
@@ -70,21 +70,21 @@ D’autres éléments doivent être également appréciés, l’un des plus impo
 
 #### **La capacité du management**
 
-Le management d’une entreprise joue un rôle prépondérant dans la réussite de cette dernière ; les décisions qu’il prend, et qu’il sera amené à prendre, auront un impact direct sur son avenir. Ainsi, la connaissance par le dirigeant du marché, dans lequel l’entreprise évolue, tout comme son expérience professionnelle sont des facteurs clés dans la définition d’une stratégie à même d’assurer sa pérennité. D’autre part, la présence d’informations adverses doit également être connue de la Banque. L’interdiction de gérer, l’exercice de fonction de direction dans des entreprises en difficulté ou défaillantes sont autant de facteurs de risque dont l’auditeur doit s’assurer de la connaissance lors des décisions prises par la Banque.
+Le management d’une entreprise joue un rôle prépondérant dans la réussite de cette dernière ; les décisions qu’il prend, et qu’il sera amené à prendre, auront un impact direct sur son avenir. Ainsi, la **connaissance** par le dirigeant **du marché**, dans lequel l’entreprise évolue, tout comme son expérience professionnelle sont des facteurs clés dans la définition d’une stratégie à même d’assurer sa pérennité. D’autre part, la **présence d’informations adverses** doit également être connue de la Banque. L’interdiction de gérer, l’exercice de fonction de direction dans des entreprises en difficulté ou défaillantes sont autant de facteurs de risque dont l’auditeur doit s’assurer de la connaissance lors des décisions prises par la Banque.
 
   <p>&nbsp;</p>  
 
 #### **Les performances des entreprises concurrentes et l'environnement macroéconomique**
 
-Au-delà des éléments précédemment évoqués, le positionnement de l’entreprise vis-à-vis de ses compétiteurs est également un élément d’attention. Des résultats financiers positifs, une stratégie cohérente, de même qu’une équipe dirigeante capable ne prémunissent une entreprise de disparaître à moyen/long terme. Des parts de marchés faibles amoindrissent la marge de manœuvre d’une entreprise et la fragilisent vis-à-vis de ses concurrents. Ainsi, un positionnement de niche, à savoir la spécialisation ou l’hyperspécialisation dans un produit/service précis peut ainsi s’avérer être une solution viable de part l’absence de compétiteurs directs.
-D’autre part, l'effet de taille, que ce soit au travers du chiffre d’affaires ou du total bilan, joue également un rôle prépondérant. Les entreprises de dimension plus modestes disposent de moyens plus limités (trésorerie, garanties, etc.) qui réduisent leur capacité à investir dans des technologies nouvelles nécessaires à leur survie, ou faire face au retournement conjoncturel (crises économiques, barrières douanières, etc.).
+Au-delà des éléments précédemment évoqués, le positionnement de l’entreprise vis-à-vis de ses compétiteurs est également un élément d’attention. Des résultats financiers positifs, une stratégie cohérente, de même qu’une équipe dirigeante capable ne prémunissent une entreprise de disparaître à moyen/long terme. Des **parts de marchés** faibles amoindrissent la marge de manœuvre d’une entreprise et la fragilisent vis-à-vis de ses concurrents. Ainsi, un positionnement de niche, à savoir la **spécialisation** ou l’hyperspécialisation dans un produit/service précis peut ainsi s’avérer être une solution viable de part l’absence de compétiteurs directs.
+D’autre part, l'**effet de taille**, que ce soit au travers du chiffre d’affaires ou du total bilan, joue également un rôle prépondérant. Les entreprises de dimension plus modestes disposent de moyens plus limités (trésorerie, garanties, etc.) qui réduisent leur capacité à investir dans des technologies nouvelles nécessaires à leur survie, ou faire face aux **retournements conjoncturels** (crises économiques, barrières douanières, etc.).
 Les analyses sectorielles[^bignote3], évoquées précédemment, présentent les éléments de réponses nécessaires à l’auditeur afin de comprendre le positionnement d’une entreprise vis-à-vis de ses concurrents.
 
   <p>&nbsp;</p>  
 
 #### **Apprécier la qualité des garanties**
 
-Le défaut de la contrepartie est une éventualité qui doit être anticipé par la Banque et dont elle peut se prémunir au travers de la prise en garantie de collatérales et/ou du partage du  risque de crédit avec une tierce partie. La présence de garantie de qualité peut donc faire de l’extension d’un crédit, à une contrepartie présentant un risque de défaut élevé (ex. : activité nouvelle), une opération au risque maîtrisé. Pour cela, différents éléments doivent être évalués, à savoir, d’une part, la valeur réelle du collatéral, et d’autre part,  sa liquidité.
+Le défaut de la contrepartie est une éventualité qui doit être anticipé par la Banque et dont elle peut se prémunir au travers de la prise en garantie de collatérales et/ou du partage du  risque de crédit avec une tierce partie. La présence de garantie de qualité peut donc faire de l’extension d’un crédit, à une contrepartie présentant un risque de défaut élevé (ex. : activité nouvelle), une opération au risque maîtrisé. Pour cela, différents éléments doivent être évalués, à savoir, d’une part, la **valeur réelle** du collatéral, et d’autre part,  sa **liquidité**.
 La valeur réelle doit être appréciée dans l’hypothèse où l’entreprise fait défaut en raison de son incapacité à créer suffisamment de valeur pour assurer la continuité de son activité. Or la valeur réelle de certains actifs est directement corrélée à la performance de l’entreprise. A titre d’exemple le fond de commerce[^bignote4] d’une société défaillante peut présenter une valeur réelle nulle ; une mauvaise situation géographique et/ou une clientèle limitée n’ayant aucun intérêt pour un potentiel repreneur . Les parts sociales d’une société en est un autre exemple.
 Un actif tel qu’un bien immobilier, un véhicule ou une chaîne de montage, s’ils disposent d’une valeur décorrélée de la situation géographique ou de la clientèle de l’entreprise, peuvent présenter un risque selon leur liquidité. Un actif est dit liquide lorsqu'il peut être acheté ou vendu rapidement sans que cela n'ait d'impacts majeurs sur son prix. L’existence d’un marché, de même que la capacité de la Banque à trouver un acheteur, doivent donc être appréciées. A titre d’exemple la vente d’un bien tel qu’une chaîne de montage construite pour répondre un besoin unique au client, peut entraîner :
 
