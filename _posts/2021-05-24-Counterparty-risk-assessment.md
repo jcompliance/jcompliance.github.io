@@ -1,6 +1,6 @@
 ---
 layout: post # do not change
-title:  "Counterparty risk assessment - Auditing Corporate and Small and Medium-sized Enterprises' market" # post title
+title:  "Counterparty risk assessment - Auditing Corporate and Medium-sized Enterprises' market" # post title
 ref: chilichili2 # if you want to make multilingual version of a post, you will use a same "reference".
 date:   2021-05-24 08:10:00 +0800 # datetime and the timezone.
 categories: Auditing Corporate and Small and Medium-sized Enterprises' market # with the filename, this consists a url.
@@ -28,7 +28,7 @@ The time devoted by the auditor to carrying out his various checks is limited an
 
 Thus, the development of an organizational chart is the easiest way to achieve this objective:
 
-! [Text to display if the image is not available] (https://i.imgur.com/veHse6d.png)
+![Text to display if the image is not available](https://i.imgur.com/veHse6d.png)
 
 In view of the diagram above, the ABC group is specialized in manufacturing furniture. It is  composed of 3 entities including a holding and *Company A* which controls 2 subsidiaries, *Company B* and *Company C*. Their activity (sawing and planing of wood, manufacturing furniture) help us to understand the economic links regulating the group :
 
@@ -85,7 +85,7 @@ Sectoral analysis[^bignote3] mentioned above will help the auditor to understand
 #### **Appreciate the quality of guarantees**
 
 The default of the counterparty is an eventuality which must be considered by the Bank and from which it can protect itself by taking collateral and/or sharing the credit risk with a third party. The presence of a valuable guarantee can therefore make the extension of a loan to a counterparty with a high risk of default (eg: new activity) an operation with controlled risk. For this, various elements must be assessed, on the first hand the **real value** of the collateral, and on the second hand its **liquidity**.
-The **real value** should be assessed considering the company's default is due to its inability to create enough revenue to ensure the continuity of its activity. However, the real value of certain assets is directly correlated to the performance of the company. For example, the value of a store[^ bignote4] of a failing company may have a real value close to zero ; a poor geographic location and/or a limited clientele will have no interest to a potential buyer. Another example are company shares. 
+The **real value** should be assessed considering the company's default is due to its inability to create enough revenue to ensure the continuity of its activity. However, the real value of certain assets is directly correlated to the performance of the company. For example, the value of a store[^bignote4] of a failing company may have a real value close to zero ; a poor geographic location and/or a limited clientele will have no interest to a potential buyer. Another example are company shares. 
 Assets such as real estate, vehicle or assembly line, can present a risk regarding to their **liquidity**. An asset is considered to be liquid when it can be bought or sold quickly without major impact on its price. The existence of a market, as well as the ability of the Bank to find a buyer, must therefore be assessed. For example, the sale of a good such as an assembly line built to meet a very specific customer need, can lead to:
 
 - the scrapping of part of the elements that constitute it;
@@ -97,4 +97,4 @@ Thus the proceeds of the sale and/or the costs associated with it (fees, commiss
 [^bignote1]: as soon as 2 of the following three thresholds are crossed: € 1,550,000 total balance sheet (sum of all assets in an accounting balance sheet); € 3,100,000 in turnover excluding tax; 50 employees.
 [^bignote2]: The consolidated accounts are mandatory for groups whose results exceed, over the last two financial years, two of the following three thresholds: Balance sheet greater than 15 million euros; Turnover greater than 30 million euros; Workforce greater than 250 people.
 [^bignote3]: https://www.xerfi.com/
-[^ bignote4]: set of elements including tangible elements, such as material, goods and equipment, and intangible elements, such as customers, goodwill, lease rights and trade name.
+[^bignote4]: set of elements including tangible elements, such as material, goods and equipment, and intangible elements, such as customers, goodwill, lease rights and trade name.
