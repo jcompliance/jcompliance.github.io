@@ -3,7 +3,7 @@ layout: post # do not change
 title:  "Counterparty risk assessment - Auditing Corporate and Medium-sized Enterprises' market" # post title
 ref: chilichili2 # if you want to make multilingual version of a post, you will use a same "reference".
 date:   2021-05-24 08:10:00 +0800 # datetime and the timezone.
-categories: Auditing Corporate and Small and Medium-sized Enterprises' market # with the filename, this consists a url.
+categories: Auditing Corporate and Medium-sized Enterprises' market # with the filename, this consists a url.
 lang: en # use en or fr.
 ---
 #### **The main principles of risk analysis**
@@ -37,8 +37,8 @@ In view of the diagram above, the ABC group is specialized in manufacturing furn
 
 *Company C* is central in this organization, through the revenue it represents (€ 100 million vs. € 50 million and € 5 million), as well as, its role in the production chain. Therefore, even if the Bank’s credit risk rely on *Company A* (80%), the auditor's analysis will focus on *Company C*.
 
-*Note Bene1 : the risk rating assigned by the Bank, as well as the Banque de France rating, have to be considered for each counterpart when analyzing a corporate group regarding the adverse impacts that may arise from a single entity. However, this must first and foremost be taken into account when defining the counterparty sample to be assessed.*
-*Note Bene2 : Appendices 17 and 18 of the tax package, as well as modules 51, 53, 56 57, 58 and 59 of the Fichier Bancaire des ENtreprise de la Banque de France (FIBEN), will provide most of the elements necessary for the realization of an organization chart.*
+*Note Bene2 : the risk rating assigned by the Bank, as well as the Banque de France rating, have to be considered for each counterpart when analyzing a corporate group regarding the adverse impacts that may arise from a single entity. However, this must first and foremost be taken into account when defining the counterparty sample to be assessed.*
+*Note Bene3 : Appendices 17 and 18 of the tax package, as well as modules 51, 53, 56 57, 58 and 59 of the Fichier Bancaire des ENtreprise de la Banque de France (FIBEN), will provide most of the elements necessary for the realization of an organization chart.*
   
   <p>&nbsp;</p>
 
@@ -93,6 +93,7 @@ Assets such as real estate, vehicle or assembly line, can present a risk regardi
 
 Thus the proceeds of the sale and/or the costs associated with it (fees, commissions) may be insufficient to cover the debt left by the customer.
   
+  <p>&nbsp;</p> 
 
 [^bignote1]: as soon as 2 of the following three thresholds are crossed: € 1,550,000 total balance sheet (sum of all assets in an accounting balance sheet); € 3,100,000 in turnover excluding tax; 50 employees.
 [^bignote2]: The consolidated accounts are mandatory for groups whose results exceed, over the last two financial years, two of the following three thresholds: Balance sheet greater than 15 million euros; Turnover greater than 30 million euros; Workforce greater than 250 people.
