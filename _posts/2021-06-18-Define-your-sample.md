@@ -15,7 +15,7 @@ Time and resources constraint the audit mission and require checks done by the t
  - The counterparties or group of counterparties with the most **significant debt within the Bank's client portfolio** (concentration risk) ;
  - The **risk rating** of the counterparty or group of counterparties (Bank and/or Banque de France risk rating)[^bignote2] ;
  - The existence of **adverse information** on a counterparty or a group of counterparties regarding its ability to honor its engagements at short or medium-long term (fraud, regulatory changes, economic sanctions, etc.).
-
+ 
 Beyond the counterparty risk, the concentration risk analysis should also be taken into account when analyzing the Bank's strategy on the medium and large enterprises market. It is a major issue that cannot be overlooked when defining the sample. The overrepresentation of a counterparty or a business activity within the Bank's client portfolio weakens the Bank’s resilience to the default risk. The adverse impact of a counterparty (loss, business continuity, etc.) is proportional to its debt in the books of the Bank. 
 
   <p>&nbsp;</p>
