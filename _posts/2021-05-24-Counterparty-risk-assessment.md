@@ -18,6 +18,7 @@ The analysis of the default risk of a counterparty, such as a large or medium-si
 
 While the understanding of the financial statements is fundamental in order to assess the risk, it is only one of the components of the analysis that will have to be carried out. Thus, the presence of an expert profession within the audit team is dispensable in the context of the analysis and assessment of the risks of a counterparty or of a group of counterparties. However  it appears necessary regarding supervision of the audit assignment.
  
+  <p>&nbsp;</p> 
 
 #### **Targeting your analysis, e.g. a corporate group**
 
@@ -51,7 +52,7 @@ The **Statutory Audit Report** is also essential, when it is required by law[^bi
 On the other hand, the auditor should not limit himself to identify and understand the evolutions and trends on the most significant items, but also to ensure the consistency of these numbers by comparing **financial statements** of the company to these **of other companies with equivalent characteristics** (size, market). Thus this approach  can help to detect competitive advantages/disadvantages and guide the auditor in his assessment.
 It is also important to note that intergroup relationships may distort the understanding of the financial statements of an entity which belong to a group. Reading the consolidated accounts, when they are available [^bignote2] will solve this problem. Otherwise, the analysis of the accounts receivable ledger could be an alternative.
   
-  <p> & nbsp; </p>
+  <p>&nbsp;</p>
 
 #### **Company strategy**
 

@@ -18,7 +18,7 @@ Time and resources constraint the audit mission and require checks done by the t
 
 Beyond the counterparty risk, the concentration risk analysis should also be taken into account when analyzing the Bank's strategy on the medium and large enterprises market. It is a major issue that cannot be overlooked when defining the sample. The overrepresentation of a counterparty or a business activity within the Bank's client portfolio weakens the Bank’s resilience to the default risk. The adverse impact of a counterparty (loss, business continuity, etc.) is proportional to its debt in the books of the Bank. 
 
-  <p> & nbsp; </p>
+  <p>&nbsp;</p>
 
 [^bignote1]: The Banque de France regularly publishes publications on business bankruptcy in France, which granularity is by business activity
 https://www.banque-france.fr/statistiques/chiffres-cles-france-et-etranger/defaillances-dentreprises ; ↩
