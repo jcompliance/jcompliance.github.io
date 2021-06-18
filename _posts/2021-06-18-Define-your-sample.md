@@ -20,6 +20,5 @@ Beyond the counterparty risk, the concentration risk analysis should also be tak
 
   <p>&nbsp;</p>
 
-[^bignote1]: The Banque de France regularly publishes publications on business bankruptcy in France, which granularity is by business activity
-https://www.banque-france.fr/statistiques/chiffres-cles-france-et-etranger/defaillances-dentreprises ; ↩
-[^bignote2]: The credit rating of the Banque de France tends to assess the risk of default of the company https://entreprises.banque-france.fr/cotation-des-entreprises/comprendre-la-cotation-banque-de-france/comprendre-la-cote-de-credit. ↩
+[^bignote1]: The Banque de France regularly publishes publications on business bankruptcy in France, which granularity is by business activity, https://www.banque-france.fr/statistiques/chiffres-cles-france-et-etranger/defaillances-dentreprises ; ↩
+[^bignote2]: The credit rating of the Banque de France tends to assess the risk of default of the company, https://entreprises.banque-france.fr/cotation-des-entreprises/comprendre-la-cotation-banque-de-france/comprendre-la-cote-de-credit. ↩
