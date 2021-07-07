@@ -49,7 +49,7 @@ Ainsi, *« La plupart des directeurs de l’audit interne prévoient que l’aud
 
   <p>&nbsp;</p>  
 
-[^bignote1]: (taux auquel les banques commerciales peuvent emprunter auprès de la banque centrale ou sur le marché interbancaire)
-[^bignote2]: Cécile Desjardins, « L’audit interne veut évoluer vers un rôle plus stratégique », Les Echos.fr, 15 juin 2015
+[^bignote1]: Taux auquel les banques commerciales peuvent emprunter auprès de la banque centrale ou sur le marché interbancaire ;
+[^bignote2]: Cécile Desjardins, « L’audit interne veut évoluer vers un rôle plus stratégique », Les Echos.fr, 15 juin 2015.
 
 
